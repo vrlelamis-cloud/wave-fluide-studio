@@ -27,7 +27,8 @@ class OrganicFX {
     _clock += dt;
 
     // --- Déclenchement des ondes : à chaque moindre coup de basse ---
-    final double rate = (rs.rb - rs.prevRb) / math.max(dt, 0.008);
+    // rbDelta = rb - rb(image précédente), calculé par RenderState.step.
+    final double rate = rs.rbDelta / math.max(dt, 0.008);
     if (rate > 5 &&
         rs.rb > rs.ka * 1.1 + 0.06 &&
         (_clock - _lastWaveTime) > 0.06 &&
@@ -70,6 +71,7 @@ class OrganicFX {
       n.age += dt;
       // Chute + accélération d'écrasement (+0,3·m/s).
       n.y += (n.vy + (n.squash > 0.05 ? 0.3 : 0)) * dt;
+      n.x += n.vx * dt;
       n.rot += n.rotSpeed * dt;
       n.squash *= math.exp(-dt / 0.28);
     }
@@ -153,9 +155,12 @@ void drawOrganic(Scene s, Canvas canvas, Size size, OrganicFX fx) {
     canvas.translate(x, y);
     canvas.rotate(rot);
     canvas.scale(scale * (1 + 0.7 * n.squash), scale * (1 - 0.6 * n.squash));
-    _drawNoteGlyph(canvas, n.type,
-        paletteOrOled ? _alpha(ink.color, alpha) : kWhite.withValues(alpha: alpha),
-        paletteOrOled);
+    _drawNoteGlyph(
+        canvas,
+        n.type,
+        paletteOrOled
+            ? _alpha(ink.color, alpha)
+            : kWhite.withValues(alpha: alpha));
     canvas.restore();
   }
 
@@ -247,7 +252,7 @@ Color _alpha(Color c, double a) => Color.fromRGBO(
     (c.r * 255).round(), (c.g * 255).round(), (c.b * 255).round(), a.clamp(0, 1));
 
 /// Dessin vectoriel des 5 types de notes (aucune police embarquée).
-void _drawNoteGlyph(Canvas canvas, int type, Color color, bool solidFill) {
+void _drawNoteGlyph(Canvas canvas, int type, Color color) {
   final stroke = Paint()
     ..style = PaintingStyle.stroke
     ..strokeWidth = 0.07
@@ -314,7 +319,7 @@ class _Wave {
 }
 
 class _Note {
-  double x, y, vy; // x en fraction de largeur, y en unités de m (m = min(W,H))
+  double x, y, vx, vy; // x fraction de largeur, y en unités de m = min(W,H)
   final double size;
   final int type;
   double rot;
@@ -326,7 +331,7 @@ class _Note {
   double squash = 0;
 
   _Note({
-    required this.x, required this.y, required this.vy,
+    required this.x, required this.y, required this.vx, required this.vy,
     required this.size, required this.type, required this.rot,
     required this.rotSpeed, required this.phase, required this.sway,
     required this.life,
@@ -349,8 +354,6 @@ class _Note {
       vx = left ? 0.04 + rng.nextDouble() * 0.10 : -(0.04 + rng.nextDouble() * 0.10);
       speedMul = 0.4 + rng.nextDouble() * 0.5;
     }
-    // x évolue horizontalement pendant la chute.
-    final _Note n;
     final double vy = (0.16 + 0.2 * q) * speedMul;
     int type;
     if (q < 0.25) {
@@ -360,8 +363,8 @@ class _Note {
     } else {
       type = rng.nextBool() ? 4 : 0;
     }
-    n = _Note(
-      x: x, y: y, vy: vy,
+    return _Note(
+      x: x, y: y, vx: vx, vy: vy,
       size: (0.075 - 0.04 * q) * (0.8 + rng.nextDouble() * 0.5),
       type: type,
       rot: (rng.nextDouble() - 0.5) * 0.8,
@@ -370,12 +373,5 @@ class _Note {
       sway: 0.02 + rng.nextDouble() * 0.02,
       life: 4 + rng.nextDouble() * 2.5,
     );
-    n.vx = vx;
-    return n;
   }
-
-  late final double vx; // vitesse horizontale (fraction de largeur / s)
 }
-
-// Extension de mouvement horizontal (utilisée dans OrganicFX.step).
-extension _NoteMove on _Note {}

@@ -1,12 +1,13 @@
 # Construit l'APK release à chaque push sur main.
-# Le release build utilise la signature debug (défaut Flutter), suffisant
-# pour tester. Remplacez par votre keystore pour un déploiement Play Store.
 name: Build APK
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -36,15 +37,28 @@ jobs:
       - name: Dépendances
         run: flutter pub get
 
-      - name: Analyse statique (n'échoue pas le build)
-        run: flutter analyze || true
+      - name: Analyse statique
+        run: flutter analyze
 
       - name: Tests unitaires
         run: flutter test
-        continue-on-error: true
 
       - name: Build APK release
-        run: flutter build apk --release
+        shell: bash
+        run: |
+          set -o pipefail
+          flutter build apk --release 2>&1 | tee build.log
+
+      - name: Publier le log complet en cas d'échec
+        if: failure()
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout main -- 2>/dev/null || true
+          git add build.log
+          git commit -m "Log du build en échec (automatique)"
+          git push
 
       - name: Renommer l'artefact
         run: mv build/app/outputs/flutter-apk/app-release.apk WaveFluideStudio-release.apk

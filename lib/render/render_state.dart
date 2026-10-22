@@ -19,6 +19,7 @@ class RenderState {
   double ka = 0;     // moyenne lente de rb (déclenchement ondes)
   double rb = 0;     // enveloppe de basse normalisée
   double prevRb = 0;
+  double rbDelta = 0; // variation de rb depuis l'image précédente (pour les ondes)
   double res = 0;    // énergie de résonance (notes)
   double hold = 0;   // suivi du coup de basse (écrasement)
   double t = 0;      // temps d'animation cumulé
@@ -33,7 +34,7 @@ class RenderState {
       sm[k] = 0; _sm1[k] = 0; _pos[k] = 0; _vel[k] = 0;
     }
     pk = 0.3; kp = 0.03; wp = 0.05; ka = 0; rb = 0; prevRb = 0;
-    res = 0; hold = 0; t = 0;
+    rbDelta = 0; res = 0; hold = 0; t = 0;
   }
 
   /// Fait avancer l'état de [dt] secondes avec les caractéristiques brutes
@@ -62,6 +63,7 @@ class RenderState {
     final double g = 0.9 / math.max(0.3, pk);
 
     // --- Enveloppe de basse normalisée (rb) ---
+    final double oldRb = rb;
     if (!paused) {
       final double e = fv.env;
       kp = math.max(e, kp * math.exp(-dt / 3));
@@ -70,6 +72,7 @@ class RenderState {
     } else {
       rb = 0;
     }
+    rbDelta = rb - oldRb;
 
     // --- Bandes : cible puis deux étages de lissage ---
     for (int k = 0; k < 16; k++) {
@@ -129,7 +132,7 @@ class RenderState {
     loud = sl / 16;
 
     // --- Résonance et suivi du coup de basse (notes) ---
-    res = math.min(1.2, (res + math.max(0, rb - prevRb) * 2)) * math.exp(-dt / 0.22);
+    res = math.min(1.2, (res + math.max(0, rbDelta) * 2)) * math.exp(-dt / 0.22);
     hold = math.max(rb, hold * math.exp(-dt / 0.5));
     ka += (rb - ka) * (1 - math.exp(-dt / 0.2));
     prevRb = rb;

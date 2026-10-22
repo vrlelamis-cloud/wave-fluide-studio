@@ -4,8 +4,6 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
-def ffmpegFlavor = "min-gpl-lts" // ou "min-lts" pour éviter la GPL (alors x264 indisponible)
-
 android {
     namespace = "com.elvermoye.wavefluide"
     compileSdk = 34
@@ -32,9 +30,8 @@ android {
         release {
             // Signature debug pour tester simplement ; remplacez par votre keystore.
             signingConfig = signingConfigs.debug
-            minifyEnabled = true
-            shrinkResources = true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled = false
+            shrinkResources = false
         }
     }
 }
@@ -43,8 +40,6 @@ flutter {
     source = "../.."
 }
 
-// FFmpeg Kit : sélection de la saveur (voir variable ffmpegFlavor ci-dessus).
-// min-gpl fournit libx264 ; min n'inclut aucun code GPL.
-dependencies {
-    implementation "com.arthenica:ffmpeg-kit-${ffmpegFlavor}:6.0-2"
-}
+// NB : ffmpeg_kit_flutter_new embarque ses propres bibliothèques natives
+// précompilées (AAR) — NE PAS ajouter de dépendance com.arthenica:ffmpeg-kit-*
+// manuellement ici, cela provoque un conflit de classes à la compilation.
