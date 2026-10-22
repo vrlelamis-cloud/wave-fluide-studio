@@ -101,7 +101,7 @@ class AppController extends ChangeNotifier {
       update();
       return;
     }
-    status = '$added morceau(x) importé(s)';
+    status = added.toString() + ' morceau(x) importé(s)';
     await _rebuildPlaylist(startIndex: current < 0 ? firstAdded : current);
     if (current < 0) {
       current = firstAdded;
@@ -119,9 +119,9 @@ class AppController extends ChangeNotifier {
       }
       await player.setAudioSource(
         ConcatenatingAudioSource(children: sources),
-        initialIndex: startIndex.clamp(0, paths.length - 1),
+        initialIndex: startIndex.clamp(0, paths.length - 1).toInt(),
       );
-      current = startIndex.clamp(0, paths.length - 1);
+      current = startIndex.clamp(0, paths.length - 1).toInt();
     } catch (e) {
       status = 'Fichier illisible';
     }
@@ -146,7 +146,7 @@ class AppController extends ChangeNotifier {
 
   String get currentName =>
       current >= 0 && current < names.length
-          ? names[current].replaceAll(RegExp('\.[^.]+$'), '')
+          ? names[current].replaceAll(RegExp('\\.[^.]+\$'), '')
           : '';
 
   // ------------------------------------------------------------------
@@ -166,7 +166,7 @@ class AppController extends ChangeNotifier {
       oldFeatures?.dispose();
       rs.reset();
       fx.reset();
-      status = 'Prêt : $currentName';
+      status = 'Prêt : ' + currentName;
     } catch (e) {
       features = null;
       oldFeatures?.dispose();
@@ -252,7 +252,7 @@ class AppController extends ChangeNotifier {
     if (dur > f.duration - start) dur = f.duration - start;
     exporting = true;
     exportProgress = 0;
-    exportLabel = 'Export 0 % (${fmt.width}x${fmt.height})';
+    exportLabel = 'Export 0 % (' + fmt.width.toString() + 'x' + fmt.height.toString() + ')';
     exportedPath = null;
     update();
 
@@ -281,7 +281,7 @@ class AppController extends ChangeNotifier {
       status = 'Export terminé';
     } catch (e) {
       final msg = e.toString().replaceFirst(RegExp('^Exception: '), '');
-      status = _cancelledByUser(msg) ? 'Export annulé' : 'Erreur : $msg';
+      status = _cancelledByUser(msg) ? 'Export annulé' : 'Erreur : ' + msg;
       exporter = null;
     } finally {
       await ExportServiceChannel.stop();
@@ -295,7 +295,7 @@ class AppController extends ChangeNotifier {
 
   void cancelExport() {
     exporter?.cancel();
-    status = 'Annulation de l\'export…';
+    status = "Annulation de l'export…";
     update();
   }
 
