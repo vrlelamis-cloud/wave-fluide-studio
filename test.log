@@ -1,26 +1,11 @@
 
 ::group::✅ Passing tests
 ✅ FFT pics corrects pour une sinusoïde
-::endgroup::
-::group::❌ FFT conversion dB en octets (plage -90..0) (failed)
-Unsupported operation: Infinity or NaN toInt
-dart:core                                        double.toInt
-package:wave_fluide_studio/audio/fft.dart 85:14  Fft.dbByte
-test/analysis_test.dart 38:18                    main.<fn>.<fn>
-::endgroup::
-::group::✅ Passing tests
+✅ FFT conversion dB en octets (plage -90..0)
 ✅ bandes bornes logarithmiques exactes
 ✅ ressort critique montée et descente stables, indépendant du dt
 ✅ ressort critique pas de dépendance au taux d'images
-::endgroup::
-::group::❌ enveloppe de basse et ondes kick synthétique 60 Hz toutes les 0,5 s -> ondes à ±1 image (failed)
-Expected: a value greater than or equal to <29>
-  Actual: <0>
-   Which: is not a value greater than or equal to <29>
-
-package:matcher                                     expect
-package:flutter_test/src/widget_tester.dart 473:18  expect
-test/analysis_test.dart 133:7                       main.<fn>.<fn>
+✅ enveloppe de basse et ondes kick synthétique 60 Hz toutes les 0,5 s -> ondes à ±1 image
 ::endgroup::
 
-::error::4 tests passed, 2 failed.
+🎉 6 tests passed.
