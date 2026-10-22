@@ -8,6 +8,9 @@ allprojects {
 rootProject.buildDir = '../build'
 
 subprojects {
+    // Chaque sous-projet a son propre répertoire sous ../build (pas de collision),
+    // et flutter tool cherche l'APK dans build/app/outputs/flutter-apk.
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
     project.evaluationDependsOn(':app')
 }
 
