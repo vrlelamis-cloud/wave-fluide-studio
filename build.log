@@ -93,69 +93,1032 @@ Loading local repository...
 [=====================                  ] 55% Unzipping... android-ndk-r28c/CHAN
 [=======================================] 100% Unzipping... android-ndk-r28c/CHA
 
-Warning: The plugin ffmpeg_kit_flutter_android requires Android SDK version 35 or higher.
-For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
-Warning: The plugin ffmpeg_kit_flutter_new requires Android SDK version 35 or higher.
-For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
-Warning: The plugin flutter_plugin_android_lifecycle requires Android SDK version 36 or higher.
-For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
-Warning: The plugin gal requires Android SDK version 36 or higher.
-For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
-Warning: The plugin jni requires Android SDK version 35 or higher.
-For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
-Warning: The plugin jni_flutter requires Android SDK version 35 or higher.
-For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
-Warning: The plugin package_info_plus requires Android SDK version 36 or higher.
-For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
-Warning: The plugin video_player_android requires Android SDK version 36 or higher.
-For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
-Warning: The plugin wakelock_plus requires Android SDK version 36 or higher.
-For more information about build configuration, see https://flutter.dev/to/review-gradle-config.
 Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 1552 bytes (99.9% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
-Your project is configured to compile against Android SDK 34, but the following plugin(s) require to be compiled against a higher Android SDK version:
-- ffmpeg_kit_flutter_android compiles against Android SDK 35
-- ffmpeg_kit_flutter_new compiles against Android SDK 35
-- flutter_plugin_android_lifecycle compiles against Android SDK 36
-- gal compiles against Android SDK 36
-- jni compiles against Android SDK 35
-- jni_flutter compiles against Android SDK 35
-- package_info_plus compiles against Android SDK 36
-- video_player_android compiles against Android SDK 36
-- wakelock_plus compiles against Android SDK 36
-Fix this issue by compiling against the highest Android SDK version (they are backward compatible).
-Add the following to /home/runner/work/wave-fluide-studio/wave-fluide-studio/android/app/build.gradle:
-
-    android {
-        compileSdk = 36
-        ...
-    }
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100     9  100     9    0     0     33      0 --:--:-- --:--:-- --:--:--    34
+100     9  100     9    0     0     86      0 --:--:-- --:--:-- --:--:--    86
+Checking the license for package CMake 3.22.1 in /usr/local/lib/android/sdk/licenses
+License for package CMake 3.22.1 accepted.
+Preparing "Install CMake 3.22.1 v.3.22.1".
+"Install CMake 3.22.1 v.3.22.1" ready.
+Installing CMake 3.22.1 in /usr/local/lib/android/sdk/cmake/3.22.1
+"Install CMake 3.22.1 v.3.22.1" complete.
+"Install CMake 3.22.1 v.3.22.1" finished.
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFprobeSessionExecuteTask.java:5: error: cannot find symbol
+import com.arthenica.ffmpegkit.FFmpegKitConfig;
+                              ^
+  symbol:   class FFmpegKitConfig
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFprobeSessionExecuteTask.java:6: error: cannot find symbol
+import com.arthenica.ffmpegkit.FFprobeSession;
+                              ^
+  symbol:   class FFprobeSession
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFprobeSessionExecuteTask.java:11: error: cannot find symbol
+    private final FFprobeSession ffprobeSession;
+                  ^
+  symbol:   class FFprobeSession
+  location: class FFprobeSessionExecuteTask
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:13: error: cannot find symbol
+import com.arthenica.ffmpegkit.AbiDetect;
+                              ^
+  symbol:   class AbiDetect
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:14: error: cannot find symbol
+import com.arthenica.ffmpegkit.AbstractSession;
+                              ^
+  symbol:   class AbstractSession
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:15: error: cannot find symbol
+import com.arthenica.ffmpegkit.FFmpegKit;
+                              ^
+  symbol:   class FFmpegKit
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:16: error: cannot find symbol
+import com.arthenica.ffmpegkit.FFmpegKitConfig;
+                              ^
+  symbol:   class FFmpegKitConfig
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:17: error: cannot find symbol
+import com.arthenica.ffmpegkit.FFmpegSession;
+                              ^
+  symbol:   class FFmpegSession
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:18: error: cannot find symbol
+import com.arthenica.ffmpegkit.FFprobeKit;
+                              ^
+  symbol:   class FFprobeKit
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:19: error: cannot find symbol
+import com.arthenica.ffmpegkit.FFprobeSession;
+                              ^
+  symbol:   class FFprobeSession
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:20: error: cannot find symbol
+import com.arthenica.ffmpegkit.Level;
+                              ^
+  symbol:   class Level
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:21: error: cannot find symbol
+import com.arthenica.ffmpegkit.LogRedirectionStrategy;
+                              ^
+  symbol:   class LogRedirectionStrategy
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:22: error: cannot find symbol
+import com.arthenica.ffmpegkit.MediaInformation;
+                              ^
+  symbol:   class MediaInformation
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:23: error: cannot find symbol
+import com.arthenica.ffmpegkit.MediaInformationJsonParser;
+                              ^
+  symbol:   class MediaInformationJsonParser
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:24: error: cannot find symbol
+import com.arthenica.ffmpegkit.MediaInformationSession;
+                              ^
+  symbol:   class MediaInformationSession
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:25: error: cannot find symbol
+import com.arthenica.ffmpegkit.Packages;
+                              ^
+  symbol:   class Packages
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:26: error: cannot find symbol
+import com.arthenica.ffmpegkit.ReturnCode;
+                              ^
+  symbol:   class ReturnCode
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:27: error: cannot find symbol
+import com.arthenica.ffmpegkit.Session;
+                              ^
+  symbol:   class Session
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:28: error: cannot find symbol
+import com.arthenica.ffmpegkit.SessionState;
+                              ^
+  symbol:   class SessionState
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:29: error: cannot find symbol
+import com.arthenica.ffmpegkit.Signal;
+                              ^
+  symbol:   class Signal
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:30: error: cannot find symbol
+import com.arthenica.ffmpegkit.Statistics;
+                              ^
+  symbol:   class Statistics
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFprobeSessionExecuteTask.java:15: error: cannot find symbol
+    public FFprobeSessionExecuteTask(@NonNull final FFprobeSession ffprobeSession, @NonNull final FFmpegKitFlutterMethodResultHandler resultHandler, @NonNull final MethodChannel.Result result) {
+                                                    ^
+  symbol:   class FFprobeSession
+  location: class FFprobeSessionExecuteTask
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1306: error: cannot find symbol
+    protected static int toInt(final Level level) {
+                                     ^
+  symbol:   class Level
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1310: error: cannot find symbol
+    protected static Map<String, Object> toMap(final Session session) {
+                                                     ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1346: error: cannot find symbol
+    protected static int toInt(final LogRedirectionStrategy logRedirectionStrategy) {
+                                     ^
+  symbol:   class LogRedirectionStrategy
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1362: error: cannot find symbol
+    protected static LogRedirectionStrategy toLogRedirectionStrategy(final int value) {
+                     ^
+  symbol:   class LogRedirectionStrategy
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1378: error: cannot find symbol
+    protected static SessionState toSessionState(final int value) {
+                     ^
+  symbol:   class SessionState
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1392: error: cannot find symbol
+    protected static Map<String, Object> toMap(final com.arthenica.ffmpegkit.Log log) {
+                                                                            ^
+  symbol:   class Log
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1402: error: cannot find symbol
+    protected static Map<String, Object> toMap(final Statistics statistics) {
+                                                     ^
+  symbol:   class Statistics
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1419: error: cannot find symbol
+    protected static Map<String, Object> toMap(final MediaInformation mediaInformation) {
+                                                     ^
+  symbol:   class MediaInformation
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1476: error: cannot find symbol
+    protected static List<Map<String, Object>> toSessionMapList(final List<? extends Session> sessionList) {
+                                                                                     ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1486: error: cannot find symbol
+    protected static List<Map<String, Object>> toLogMapList(final List<com.arthenica.ffmpegkit.Log> logList) {
+                                                                                          ^
+  symbol:   class Log
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1496: error: cannot find symbol
+    protected static List<Map<String, Object>> toStatisticsMapList(final List<com.arthenica.ffmpegkit.Statistics> statisticsList) {
+                                                                                          ^
+  symbol:   class Statistics
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1510: error: cannot find symbol
+    protected void emitLog(final com.arthenica.ffmpegkit.Log log) {
+                                                        ^
+  symbol:   class Log
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1516: error: cannot find symbol
+    protected void emitStatistics(final Statistics statistics) {
+                                        ^
+  symbol:   class Statistics
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1522: error: cannot find symbol
+    protected void emitSession(final Session session) {
+                                     ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/MediaInformationSessionExecuteTask.java:5: error: cannot find symbol
+import com.arthenica.ffmpegkit.MediaInformationSession;
+                              ^
+  symbol:   class MediaInformationSession
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/MediaInformationSessionExecuteTask.java:6: error: cannot find symbol
+import com.arthenica.ffmpegkit.FFmpegKitConfig;
+                              ^
+  symbol:   class FFmpegKitConfig
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/MediaInformationSessionExecuteTask.java:11: error: cannot find symbol
+    private final MediaInformationSession mediaInformationSession;
+                  ^
+  symbol:   class MediaInformationSession
+  location: class MediaInformationSessionExecuteTask
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/MediaInformationSessionExecuteTask.java:16: error: cannot find symbol
+    public MediaInformationSessionExecuteTask(@NonNull final MediaInformationSession mediaInformationSession, final int timeout, @NonNull final FFmpegKitFlutterMethodResultHandler resultHandler, @NonNull final MethodChannel.Result result) {
+                                                             ^
+  symbol:   class MediaInformationSession
+  location: class MediaInformationSessionExecuteTask
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegSessionExecuteTask.java:5: error: cannot find symbol
+import com.arthenica.ffmpegkit.FFmpegKitConfig;
+                              ^
+  symbol:   class FFmpegKitConfig
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegSessionExecuteTask.java:6: error: cannot find symbol
+import com.arthenica.ffmpegkit.FFmpegSession;
+                              ^
+  symbol:   class FFmpegSession
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegSessionExecuteTask.java:11: error: cannot find symbol
+    private final FFmpegSession ffmpegSession;
+                  ^
+  symbol:   class FFmpegSession
+  location: class FFmpegSessionExecuteTask
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegSessionExecuteTask.java:15: error: cannot find symbol
+    public FFmpegSessionExecuteTask(@NonNull final FFmpegSession ffmpegSession, @NonNull final FFmpegKitFlutterMethodResultHandler resultHandler, @NonNull final MethodChannel.Result result) {
+                                                   ^
+  symbol:   class FFmpegSession
+  location: class FFmpegSessionExecuteTask
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFprobeSessionExecuteTask.java:23: error: cannot find symbol
+        FFmpegKitConfig.ffprobeExecute(ffprobeSession);
+        ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFprobeSessionExecuteTask
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:138: error: cannot find symbol
+        FFmpegKitConfig.enableFFmpegSessionCompleteCallback(this::emitSession);
+        ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:139: error: cannot find symbol
+        FFmpegKitConfig.enableFFprobeSessionCompleteCallback(this::emitSession);
+        ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:140: error: cannot find symbol
+        FFmpegKitConfig.enableMediaInformationSessionCompleteCallback(this::emitSession);
+        ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:142: error: cannot find symbol
+        FFmpegKitConfig.enableLogCallback(log -> {
+        ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:148: error: cannot find symbol
+        FFmpegKitConfig.enableStatisticsCallback(statistics -> {
+        ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:685: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+              ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:685: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:699: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+              ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:699: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:708: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+              ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:708: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:716: error: cannot find symbol
+                timeout = AbstractSession.DEFAULT_TIMEOUT_FOR_ASYNCHRONOUS_MESSAGES_IN_TRANSMIT;
+                          ^
+  symbol:   variable AbstractSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:718: error: cannot find symbol
+            final List<com.arthenica.ffmpegkit.Log> allLogs = session.getAllLogs(timeout);
+                                              ^
+  symbol:   class Log
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:724: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+              ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:724: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:728: error: cannot find symbol
+            final List<com.arthenica.ffmpegkit.Log> allLogs = session.getLogs();
+                                              ^
+  symbol:   class Log
+  location: package com.arthenica.ffmpegkit
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:734: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+              ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:734: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:742: error: cannot find symbol
+                timeout = AbstractSession.DEFAULT_TIMEOUT_FOR_ASYNCHRONOUS_MESSAGES_IN_TRANSMIT;
+                          ^
+  symbol:   variable AbstractSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:750: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+              ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:750: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:759: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+              ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:759: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:763: error: cannot find symbol
+            final ReturnCode returnCode = session.getReturnCode();
+                  ^
+  symbol:   class ReturnCode
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:773: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+              ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:773: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:782: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+              ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:782: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:793: error: cannot find symbol
+        resultHandler.successAsync(result, AbiDetect.getAbi());
+                                           ^
+  symbol:   variable AbiDetect
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:799: error: cannot find symbol
+        final FFmpegSession session = FFmpegSession.create(arguments.toArray(new String[0]), null, null, null, LogRedirectionStrategy.NEVER_PRINT_LOGS);
+              ^
+  symbol:   class FFmpegSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:799: error: cannot find symbol
+        final FFmpegSession session = FFmpegSession.create(arguments.toArray(new String[0]), null, null, null, LogRedirectionStrategy.NEVER_PRINT_LOGS);
+                                                                                          ^
+  symbol:   variable LogRedirectionStrategy
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:799: error: cannot find symbol
+        final FFmpegSession session = FFmpegSession.create(arguments.toArray(new String[0]), null, null, null, LogRedirectionStrategy.NEVER_PRINT_LOGS);
+                                      ^
+  symbol:   variable FFmpegSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:804: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+              ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:804: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:813: error: cannot find symbol
+                    timeout = AbstractSession.DEFAULT_TIMEOUT_FOR_ASYNCHRONOUS_MESSAGES_IN_TRANSMIT;
+                              ^
+  symbol:   variable AbstractSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:815: error: cannot find symbol
+                final List<Statistics> allStatistics = ((FFmpegSession) session).getAllStatistics(timeout);
+                           ^
+  symbol:   class Statistics
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:815: error: cannot find symbol
+                final List<Statistics> allStatistics = ((FFmpegSession) session).getAllStatistics(timeout);
+                                                         ^
+  symbol:   class FFmpegSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:824: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+              ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:824: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:829: error: cannot find symbol
+                final List<Statistics> statistics = ((FFmpegSession) session).getStatistics();
+                           ^
+  symbol:   class Statistics
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:829: error: cannot find symbol
+                final List<Statistics> statistics = ((FFmpegSession) session).getStatistics();
+                                                      ^
+  symbol:   class FFmpegSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:840: error: cannot find symbol
+        final FFprobeSession session = FFprobeSession.create(arguments.toArray(new String[0]), null, null, LogRedirectionStrategy.NEVER_PRINT_LOGS);
+              ^
+  symbol:   class FFprobeSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:840: error: cannot find symbol
+        final FFprobeSession session = FFprobeSession.create(arguments.toArray(new String[0]), null, null, LogRedirectionStrategy.NEVER_PRINT_LOGS);
+                                                                                          ^
+  symbol:   variable LogRedirectionStrategy
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:840: error: cannot find symbol
+        final FFprobeSession session = FFprobeSession.create(arguments.toArray(new String[0]), null, null, LogRedirectionStrategy.NEVER_PRINT_LOGS);
+                                       ^
+  symbol:   variable FFprobeSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:847: error: cannot find symbol
+        final MediaInformationSession session = MediaInformationSession.create(arguments.toArray(new String[0]), null, null);
+              ^
+  symbol:   class MediaInformationSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:847: error: cannot find symbol
+        final MediaInformationSession session = MediaInformationSession.create(arguments.toArray(new String[0]), null, null);
+                                                ^
+  symbol:   variable MediaInformationSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:852: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+              ^
+  symbol:   class Session
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:852: error: cannot find symbol
+        final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                ^
+  symbol:   variable FFmpegKitConfig
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:857: error: cannot find symbol
+                final MediaInformationSession mediaInformationSession = (MediaInformationSession) session;
+                      ^
+  symbol:   class MediaInformationSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:857: error: cannot find symbol
+                final MediaInformationSession mediaInformationSession = (MediaInformationSession) session;
+                                                                         ^
+  symbol:   class MediaInformationSession
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:858: error: cannot find symbol
+                final MediaInformation mediaInformation = mediaInformationSession.getMediaInformation();
+                      ^
+  symbol:   class MediaInformation
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:870: error: cannot find symbol
+            final MediaInformation mediaInformation = MediaInformationJsonParser.fromWithError(ffprobeJsonOutput);
+                  ^
+  symbol:   class MediaInformation
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:870: error: cannot find symbol
+            final MediaInformation mediaInformation = MediaInformationJsonParser.fromWithError(ffprobeJsonOutput);
+                                                      ^
+  symbol:   variable MediaInformationJsonParser
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:880: error: cannot find symbol
+            final MediaInformation mediaInformation = MediaInformationJsonParser.fromWithError(ffprobeJsonOutput);
+                  ^
+  symbol:   class MediaInformation
+  location: class FFmpegKitFlutterPlugin
+/home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:880: error: cannot find symbol
+            final MediaInformation mediaInformation = MediaInformationJsonParser.fromWithError(ffprobeJsonOutput);
+                                                      ^
+  symbol:   variable MediaInformationJsonParser
+  location: class FFmpegKitFlutterPlugin
+100 errors
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-A problem was found with the configuration of task ':ffmpeg_kit_flutter_android:copyReleaseJniLibsProjectOnly' (type 'LibraryJniLibsTask').
-  - Gradle detected a problem with the following location: '/home/runner/work/wave-fluide-studio/wave-fluide-studio/android/build/intermediates/merged_native_libs/release/mergeReleaseNativeLibs/out'.
-
-    Reason: Task ':ffmpeg_kit_flutter_android:copyReleaseJniLibsProjectOnly' uses this output of task ':audio_session:mergeReleaseNativeLibs' without declaring an explicit or implicit dependency. This can lead to incorrect results being produced, depending on what order the tasks are executed.
-
-    Possible solutions:
-      1. Declare task ':audio_session:mergeReleaseNativeLibs' as an input of ':ffmpeg_kit_flutter_android:copyReleaseJniLibsProjectOnly'.
-      2. Declare an explicit dependency on ':audio_session:mergeReleaseNativeLibs' from ':ffmpeg_kit_flutter_android:copyReleaseJniLibsProjectOnly' using Task#dependsOn.
-      3. Declare an explicit dependency on ':audio_session:mergeReleaseNativeLibs' from ':ffmpeg_kit_flutter_android:copyReleaseJniLibsProjectOnly' using Task#mustRunAfter.
-
-    For more information, please refer to https://docs.gradle.org/8.14/userguide/validation_problems.html#implicit_dependency in the Gradle documentation.
+Execution failed for task ':ffmpeg_kit_flutter_android:compileReleaseJavaWithJavac'.
+> Compilation failed; see the compiler output below.
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFprobeSessionExecuteTask.java:5: error: cannot find symbol
+  import com.arthenica.ffmpegkit.FFmpegKitConfig;
+                                ^
+    symbol:   class FFmpegKitConfig
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFprobeSessionExecuteTask.java:6: error: cannot find symbol
+  import com.arthenica.ffmpegkit.FFprobeSession;
+                                ^
+    symbol:   class FFprobeSession
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFprobeSessionExecuteTask.java:11: error: cannot find symbol
+      private final FFprobeSession ffprobeSession;
+                    ^
+    symbol:   class FFprobeSession
+    location: class FFprobeSessionExecuteTask
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:13: error: cannot find symbol
+  import com.arthenica.ffmpegkit.AbiDetect;
+                                ^
+    symbol:   class AbiDetect
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:14: error: cannot find symbol
+  import com.arthenica.ffmpegkit.AbstractSession;
+                                ^
+    symbol:   class AbstractSession
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:15: error: cannot find symbol
+  import com.arthenica.ffmpegkit.FFmpegKit;
+                                ^
+    symbol:   class FFmpegKit
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:16: error: cannot find symbol
+  import com.arthenica.ffmpegkit.FFmpegKitConfig;
+                                ^
+    symbol:   class FFmpegKitConfig
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:17: error: cannot find symbol
+  import com.arthenica.ffmpegkit.FFmpegSession;
+                                ^
+    symbol:   class FFmpegSession
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:18: error: cannot find symbol
+  import com.arthenica.ffmpegkit.FFprobeKit;
+                                ^
+    symbol:   class FFprobeKit
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:19: error: cannot find symbol
+  import com.arthenica.ffmpegkit.FFprobeSession;
+                                ^
+    symbol:   class FFprobeSession
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:20: error: cannot find symbol
+  import com.arthenica.ffmpegkit.Level;
+                                ^
+    symbol:   class Level
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:21: error: cannot find symbol
+  import com.arthenica.ffmpegkit.LogRedirectionStrategy;
+                                ^
+    symbol:   class LogRedirectionStrategy
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:22: error: cannot find symbol
+  import com.arthenica.ffmpegkit.MediaInformation;
+                                ^
+    symbol:   class MediaInformation
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:23: error: cannot find symbol
+  import com.arthenica.ffmpegkit.MediaInformationJsonParser;
+                                ^
+    symbol:   class MediaInformationJsonParser
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:24: error: cannot find symbol
+  import com.arthenica.ffmpegkit.MediaInformationSession;
+                                ^
+    symbol:   class MediaInformationSession
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:25: error: cannot find symbol
+  import com.arthenica.ffmpegkit.Packages;
+                                ^
+    symbol:   class Packages
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:26: error: cannot find symbol
+  import com.arthenica.ffmpegkit.ReturnCode;
+                                ^
+    symbol:   class ReturnCode
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:27: error: cannot find symbol
+  import com.arthenica.ffmpegkit.Session;
+                                ^
+    symbol:   class Session
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:28: error: cannot find symbol
+  import com.arthenica.ffmpegkit.SessionState;
+                                ^
+    symbol:   class SessionState
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:29: error: cannot find symbol
+  import com.arthenica.ffmpegkit.Signal;
+                                ^
+    symbol:   class Signal
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:30: error: cannot find symbol
+  import com.arthenica.ffmpegkit.Statistics;
+                                ^
+    symbol:   class Statistics
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFprobeSessionExecuteTask.java:15: error: cannot find symbol
+      public FFprobeSessionExecuteTask(@NonNull final FFprobeSession ffprobeSession, @NonNull final FFmpegKitFlutterMethodResultHandler resultHandler, @NonNull final MethodChannel.Result result) {
+                                                      ^
+    symbol:   class FFprobeSession
+    location: class FFprobeSessionExecuteTask
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1306: error: cannot find symbol
+      protected static int toInt(final Level level) {
+                                       ^
+    symbol:   class Level
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1310: error: cannot find symbol
+      protected static Map<String, Object> toMap(final Session session) {
+                                                       ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1346: error: cannot find symbol
+      protected static int toInt(final LogRedirectionStrategy logRedirectionStrategy) {
+                                       ^
+    symbol:   class LogRedirectionStrategy
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1362: error: cannot find symbol
+      protected static LogRedirectionStrategy toLogRedirectionStrategy(final int value) {
+                       ^
+    symbol:   class LogRedirectionStrategy
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1378: error: cannot find symbol
+      protected static SessionState toSessionState(final int value) {
+                       ^
+    symbol:   class SessionState
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1392: error: cannot find symbol
+      protected static Map<String, Object> toMap(final com.arthenica.ffmpegkit.Log log) {
+                                                                              ^
+    symbol:   class Log
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1402: error: cannot find symbol
+      protected static Map<String, Object> toMap(final Statistics statistics) {
+                                                       ^
+    symbol:   class Statistics
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1419: error: cannot find symbol
+      protected static Map<String, Object> toMap(final MediaInformation mediaInformation) {
+                                                       ^
+    symbol:   class MediaInformation
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1476: error: cannot find symbol
+      protected static List<Map<String, Object>> toSessionMapList(final List<? extends Session> sessionList) {
+                                                                                       ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1486: error: cannot find symbol
+      protected static List<Map<String, Object>> toLogMapList(final List<com.arthenica.ffmpegkit.Log> logList) {
+                                                                                          ^
+    symbol:   class Log
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1496: error: cannot find symbol
+      protected static List<Map<String, Object>> toStatisticsMapList(final List<com.arthenica.ffmpegkit.Statistics> statisticsList) {
+                                                                                          ^
+    symbol:   class Statistics
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1510: error: cannot find symbol
+      protected void emitLog(final com.arthenica.ffmpegkit.Log log) {
+                                                          ^
+    symbol:   class Log
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1516: error: cannot find symbol
+      protected void emitStatistics(final Statistics statistics) {
+                                          ^
+    symbol:   class Statistics
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:1522: error: cannot find symbol
+      protected void emitSession(final Session session) {
+                                       ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/MediaInformationSessionExecuteTask.java:5: error: cannot find symbol
+  import com.arthenica.ffmpegkit.MediaInformationSession;
+                                ^
+    symbol:   class MediaInformationSession
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/MediaInformationSessionExecuteTask.java:6: error: cannot find symbol
+  import com.arthenica.ffmpegkit.FFmpegKitConfig;
+                                ^
+    symbol:   class FFmpegKitConfig
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/MediaInformationSessionExecuteTask.java:11: error: cannot find symbol
+      private final MediaInformationSession mediaInformationSession;
+                    ^
+    symbol:   class MediaInformationSession
+    location: class MediaInformationSessionExecuteTask
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/MediaInformationSessionExecuteTask.java:16: error: cannot find symbol
+      public MediaInformationSessionExecuteTask(@NonNull final MediaInformationSession mediaInformationSession, final int timeout, @NonNull final FFmpegKitFlutterMethodResultHandler resultHandler, @NonNull final MethodChannel.Result result) {
+                                                               ^
+    symbol:   class MediaInformationSession
+    location: class MediaInformationSessionExecuteTask
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegSessionExecuteTask.java:5: error: cannot find symbol
+  import com.arthenica.ffmpegkit.FFmpegKitConfig;
+                                ^
+    symbol:   class FFmpegKitConfig
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegSessionExecuteTask.java:6: error: cannot find symbol
+  import com.arthenica.ffmpegkit.FFmpegSession;
+                                ^
+    symbol:   class FFmpegSession
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegSessionExecuteTask.java:11: error: cannot find symbol
+      private final FFmpegSession ffmpegSession;
+                    ^
+    symbol:   class FFmpegSession
+    location: class FFmpegSessionExecuteTask
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegSessionExecuteTask.java:15: error: cannot find symbol
+      public FFmpegSessionExecuteTask(@NonNull final FFmpegSession ffmpegSession, @NonNull final FFmpegKitFlutterMethodResultHandler resultHandler, @NonNull final MethodChannel.Result result) {
+                                                     ^
+    symbol:   class FFmpegSession
+    location: class FFmpegSessionExecuteTask
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFprobeSessionExecuteTask.java:23: error: cannot find symbol
+          FFmpegKitConfig.ffprobeExecute(ffprobeSession);
+          ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFprobeSessionExecuteTask
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:138: error: cannot find symbol
+          FFmpegKitConfig.enableFFmpegSessionCompleteCallback(this::emitSession);
+          ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:139: error: cannot find symbol
+          FFmpegKitConfig.enableFFprobeSessionCompleteCallback(this::emitSession);
+          ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:140: error: cannot find symbol
+          FFmpegKitConfig.enableMediaInformationSessionCompleteCallback(this::emitSession);
+          ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:142: error: cannot find symbol
+          FFmpegKitConfig.enableLogCallback(log -> {
+          ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:148: error: cannot find symbol
+          FFmpegKitConfig.enableStatisticsCallback(statistics -> {
+          ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:685: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:685: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                  ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:699: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:699: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                  ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:708: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:708: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                  ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:716: error: cannot find symbol
+                  timeout = AbstractSession.DEFAULT_TIMEOUT_FOR_ASYNCHRONOUS_MESSAGES_IN_TRANSMIT;
+                            ^
+    symbol:   variable AbstractSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:718: error: cannot find symbol
+              final List<com.arthenica.ffmpegkit.Log> allLogs = session.getAllLogs(timeout);
+                                                ^
+    symbol:   class Log
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:724: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:724: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                  ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:728: error: cannot find symbol
+              final List<com.arthenica.ffmpegkit.Log> allLogs = session.getLogs();
+                                                ^
+    symbol:   class Log
+    location: package com.arthenica.ffmpegkit
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:734: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:734: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                  ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:742: error: cannot find symbol
+                  timeout = AbstractSession.DEFAULT_TIMEOUT_FOR_ASYNCHRONOUS_MESSAGES_IN_TRANSMIT;
+                            ^
+    symbol:   variable AbstractSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:750: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:750: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                  ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:759: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:759: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                  ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:763: error: cannot find symbol
+              final ReturnCode returnCode = session.getReturnCode();
+                    ^
+    symbol:   class ReturnCode
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:773: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:773: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                  ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:782: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:782: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                  ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:793: error: cannot find symbol
+          resultHandler.successAsync(result, AbiDetect.getAbi());
+                                             ^
+    symbol:   variable AbiDetect
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:799: error: cannot find symbol
+          final FFmpegSession session = FFmpegSession.create(arguments.toArray(new String[0]), null, null, null, LogRedirectionStrategy.NEVER_PRINT_LOGS);
+                ^
+    symbol:   class FFmpegSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:799: error: cannot find symbol
+          final FFmpegSession session = FFmpegSession.create(arguments.toArray(new String[0]), null, null, null, LogRedirectionStrategy.NEVER_PRINT_LOGS);
+                                                                                          ^
+    symbol:   variable LogRedirectionStrategy
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:799: error: cannot find symbol
+          final FFmpegSession session = FFmpegSession.create(arguments.toArray(new String[0]), null, null, null, LogRedirectionStrategy.NEVER_PRINT_LOGS);
+                                        ^
+    symbol:   variable FFmpegSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:804: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:804: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                  ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:813: error: cannot find symbol
+                      timeout = AbstractSession.DEFAULT_TIMEOUT_FOR_ASYNCHRONOUS_MESSAGES_IN_TRANSMIT;
+                                ^
+    symbol:   variable AbstractSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:815: error: cannot find symbol
+                  final List<Statistics> allStatistics = ((FFmpegSession) session).getAllStatistics(timeout);
+                             ^
+    symbol:   class Statistics
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:815: error: cannot find symbol
+                  final List<Statistics> allStatistics = ((FFmpegSession) session).getAllStatistics(timeout);
+                                                           ^
+    symbol:   class FFmpegSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:824: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:824: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                  ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:829: error: cannot find symbol
+                  final List<Statistics> statistics = ((FFmpegSession) session).getStatistics();
+                             ^
+    symbol:   class Statistics
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:829: error: cannot find symbol
+                  final List<Statistics> statistics = ((FFmpegSession) session).getStatistics();
+                                                        ^
+    symbol:   class FFmpegSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:840: error: cannot find symbol
+          final FFprobeSession session = FFprobeSession.create(arguments.toArray(new String[0]), null, null, LogRedirectionStrategy.NEVER_PRINT_LOGS);
+                ^
+    symbol:   class FFprobeSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:840: error: cannot find symbol
+          final FFprobeSession session = FFprobeSession.create(arguments.toArray(new String[0]), null, null, LogRedirectionStrategy.NEVER_PRINT_LOGS);
+                                                                                          ^
+    symbol:   variable LogRedirectionStrategy
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:840: error: cannot find symbol
+          final FFprobeSession session = FFprobeSession.create(arguments.toArray(new String[0]), null, null, LogRedirectionStrategy.NEVER_PRINT_LOGS);
+                                         ^
+    symbol:   variable FFprobeSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:847: error: cannot find symbol
+          final MediaInformationSession session = MediaInformationSession.create(arguments.toArray(new String[0]), null, null);
+                ^
+    symbol:   class MediaInformationSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:847: error: cannot find symbol
+          final MediaInformationSession session = MediaInformationSession.create(arguments.toArray(new String[0]), null, null);
+                                                  ^
+    symbol:   variable MediaInformationSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:852: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                ^
+    symbol:   class Session
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:852: error: cannot find symbol
+          final Session session = FFmpegKitConfig.getSession(sessionId.longValue());
+                                  ^
+    symbol:   variable FFmpegKitConfig
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:857: error: cannot find symbol
+                  final MediaInformationSession mediaInformationSession = (MediaInformationSession) session;
+                        ^
+    symbol:   class MediaInformationSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:857: error: cannot find symbol
+                  final MediaInformationSession mediaInformationSession = (MediaInformationSession) session;
+                                                                           ^
+    symbol:   class MediaInformationSession
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:858: error: cannot find symbol
+                  final MediaInformation mediaInformation = mediaInformationSession.getMediaInformation();
+                        ^
+    symbol:   class MediaInformation
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:870: error: cannot find symbol
+              final MediaInformation mediaInformation = MediaInformationJsonParser.fromWithError(ffprobeJsonOutput);
+                    ^
+    symbol:   class MediaInformation
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:870: error: cannot find symbol
+              final MediaInformation mediaInformation = MediaInformationJsonParser.fromWithError(ffprobeJsonOutput);
+                                                        ^
+    symbol:   variable MediaInformationJsonParser
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:880: error: cannot find symbol
+              final MediaInformation mediaInformation = MediaInformationJsonParser.fromWithError(ffprobeJsonOutput);
+                    ^
+    symbol:   class MediaInformation
+    location: class FFmpegKitFlutterPlugin
+  /home/runner/.pub-cache/hosted/pub.dev/ffmpeg_kit_flutter_android-1.7.0/android/src/main/java/com/arthenica/ffmpegkit/flutter/FFmpegKitFlutterPlugin.java:880: error: cannot find symbol
+              final MediaInformation mediaInformation = MediaInformationJsonParser.fromWithError(ffprobeJsonOutput);
+                                                        ^
+    symbol:   variable MediaInformationJsonParser
+    location: class FFmpegKitFlutterPlugin
+  100 errors
 
 * Try:
-> Declare task ':audio_session:mergeReleaseNativeLibs' as an input of ':ffmpeg_kit_flutter_android:copyReleaseJniLibsProjectOnly'
-> Declare an explicit dependency on ':audio_session:mergeReleaseNativeLibs' from ':ffmpeg_kit_flutter_android:copyReleaseJniLibsProjectOnly' using Task#dependsOn
-> Declare an explicit dependency on ':audio_session:mergeReleaseNativeLibs' from ':ffmpeg_kit_flutter_android:copyReleaseJniLibsProjectOnly' using Task#mustRunAfter
+> Check your code and dependencies to fix the compilation error(s)
 > Run with --scan to get full insights.
 
-BUILD FAILED in 3m 27s
-Running Gradle task 'assembleRelease'...                          209.1s
+BUILD FAILED in 3m 57s
+Running Gradle task 'assembleRelease'...                          237.8s
 Gradle task assembleRelease failed with exit code 1

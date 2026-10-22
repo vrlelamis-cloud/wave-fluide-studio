@@ -51,4 +51,4 @@ warning • The value of the field '_session' isn't used. Try removing the field
    info • Use interpolation to compose strings and values. Try using string interpolation to build the composite string • lib/ui/home_screen.dart:400:14 • prefer_interpolation_to_compose_strings
    info • Use 'const' for final variables initialized to a constant value. Try replacing 'final' with 'const' • lib/ui/home_screen.dart:435:5 • prefer_const_declarations
 
-50 issues found. (ran in 12.0s)
+50 issues found. (ran in 11.4s)
