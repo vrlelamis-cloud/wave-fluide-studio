@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:flutter/painting.dart' show Alignment, LinearGradient;
+
 import 'organic.dart';
 import 'palettes.dart';
 import 'render_state.dart';
@@ -146,7 +148,8 @@ void drawNeon(Scene s, Canvas canvas, Size size) {
   for (int j = 0; j <= 170; j++) {
     final double u = j / 170 * 2 - 1;
     final double env = math.exp(-3.4 * u * u);
-    final double w = rs.wave[((j * 127 / 170) as num).toInt().clamp(0, 127)];
+    final int wi = (j * 127 / 170).toInt().clamp(0, 127).toInt();
+    final double w = rs.wave[wi];
     final double sv = (w + 0.06 * math.sin(j * 0.25 + t * 2)) * 2.2;
     final double base =
         cy - H * 0.3 * math.min(1.2, rs.loud * 2.2 + 0.05) * env * sv;
@@ -218,14 +221,14 @@ void drawCapsules(Scene s, Canvas canvas, Size size) {
 
   for (int i = 0; i < 6; i++) {
     final double h = pw * 1.2 + math.min(1.05, rs.sm[map[i]]) * m * 0.55;
-    final rect = RRect.fromRectAndRadius(
-        Rect.fromLTWH(x0 + i * step, y0, pw, h), Radius.circular(pw / 2));
+    final rect = Rect.fromLTWH(x0 + i * step, y0, pw, h);
+    final rrect = RRect.fromRectAndRadius(rect, Radius.circular(pw / 2));
     if (ink != null) {
-      canvas.drawRRect(rect, ink);
+      canvas.drawRRect(rrect, ink);
     } else if (i.isEven) {
       // Blanc plein jusqu'à 38 %, blanc 42 % α à 78 %, presque transparent ensuite.
       canvas.drawRRect(
-        rect,
+        rrect,
         Paint()
           ..shader = LinearGradient(
             begin: Alignment.topCenter,
@@ -237,12 +240,12 @@ void drawCapsules(Scene s, Canvas canvas, Size size) {
               kWhite.withValues(alpha: 0.42),
               kWhite.withValues(alpha: 0.08),
             ],
-          ).createShader(rect.rect),
+          ).createShader(rect),
       );
     } else {
       // Impairs : l'inverse (transparent en haut, plein à partir de 62 %).
       canvas.drawRRect(
-        rect,
+        rrect,
         Paint()
           ..shader = LinearGradient(
             begin: Alignment.topCenter,
@@ -253,7 +256,7 @@ void drawCapsules(Scene s, Canvas canvas, Size size) {
               kWhite.withValues(alpha: 0.42),
               kWhite,
             ],
-          ).createShader(rect.rect),
+          ).createShader(rect),
       );
     }
   }
@@ -287,9 +290,9 @@ void drawBlue(Scene s, Canvas canvas, Size size) {
 // ------------------------- 8.5 Fluide -------------------------
 void drawFluide(Scene s, Canvas canvas, Size size) {
   final rs = s.rs;
-  final double W = size.width, H = size.height, m = math.min(W, H);
+  final double W = size.width, H = size.height;
   final double cy = H / 2;
-  final double bw = math.min(W / 15 / 1.9, 46);
+  final double bw = math.min(W / 15 / 1.9, 46.0);
   final double step = bw * 1.9;
 
   Color top, mid, bottom;
@@ -309,7 +312,8 @@ void drawFluide(Scene s, Canvas canvas, Size size) {
       ? s.inkPaint(Rect.fromLTWH(0, 0, W, H))
       : (Paint()..color = kWhite);
   for (int i = -7; i <= 7; i++) {
-    final double h = bw + math.min(1.05, rs.sm[(i.abs() * 2).clamp(0, 15)]) * (0.6 * H - bw);
+    final int b = (i.abs() * 2).clamp(0, 15).toInt();
+    final double h = bw + math.min(1.05, rs.sm[b]) * (0.6 * H - bw);
     final double x = W / 2 + i * step - bw / 2;
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -347,7 +351,8 @@ void drawFluide(Scene s, Canvas canvas, Size size) {
     double px = 0, py = 0;
     for (int i = -7; i <= 7; i++) {
       final double wob = 1 + 0.07 * math.sin(rs.t * 2.1 + i * 0.8 + ph);
-      final double h = bw + math.min(1.05, rs.sm[(i.abs() * 2).clamp(0, 15)]) * (0.6 * H - bw);
+      final int b = (i.abs() * 2).clamp(0, 15).toInt();
+      final double h = bw + math.min(1.05, rs.sm[b]) * (0.6 * H - bw);
       final double x = W / 2 + i * step * sc;
       final double y = cy - (h / 2) * wob * sc;
       if (i == -7) {

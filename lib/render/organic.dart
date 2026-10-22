@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
-import 'palettes.dart';
 import 'render_state.dart';
 import 'scene.dart';
 
@@ -37,7 +36,7 @@ class OrganicFX {
       for (int j = 0; j < 3; j++) {
         _waves.add(_Wave(
           delay: j * 0.1,
-          strength: math.min(1, rs.rb * (1 - j * 0.18) + 0.1),
+          strength: math.min(1.0, rs.rb * (1 - j * 0.18) + 0.1),
           phase: _rng.nextDouble() * math.pi * 2,
         ));
       }
@@ -138,7 +137,7 @@ void drawOrganic(Scene s, Canvas canvas, Size size, OrganicFX fx) {
 
   // ---------- Notes (par-dessus les colonnes) ----------
   for (final n in fx._notes) {
-    final double fadeIn = math.min(1, n.age * 2.5);
+    final double fadeIn = math.min(1.0, n.age * 2.5);
     double alpha = fadeIn;
     if (n.age > n.life * 0.55) {
       alpha = fadeIn * (1 - (n.age - n.life * 0.55) / (n.life * 0.45));
@@ -215,7 +214,7 @@ void drawOrganic(Scene s, Canvas canvas, Size size, OrganicFX fx) {
     final double R = r1 +
         (gap / 2 + cw * 1.6 - r1) * (0.7 + 0.3 * str) * (1 - (1 - u) * (1 - u));
     final double A = (0.04 + 0.13 * str * str) * (1 - 0.45 * u);
-    final double fade = math.pow(1 - u, 1.4) * (0.3 + 0.55 * str);
+    final double fade = math.pow(1 - u, 1.4).toDouble() * (0.3 + 0.55 * str);
     for (int pass = 0; pass < 2; pass++) {
       wavePath.reset();
       for (int i = 0; i <= 73; i++) {
@@ -249,7 +248,8 @@ void drawOrganic(Scene s, Canvas canvas, Size size, OrganicFX fx) {
 }
 
 Color _alpha(Color c, double a) => Color.fromRGBO(
-    (c.r * 255).round(), (c.g * 255).round(), (c.b * 255).round(), a.clamp(0, 1));
+    (c.r * 255).round(), (c.g * 255).round(), (c.b * 255).round(),
+    a.clamp(0.0, 1.0).toDouble());
 
 /// Dessin vectoriel des 5 types de notes (aucune police embarquée).
 void _drawNoteGlyph(Canvas canvas, int type, Color color) {
