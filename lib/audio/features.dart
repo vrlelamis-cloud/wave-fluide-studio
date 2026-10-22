@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'fft.dart';
 
 /// Caractéristiques précalculées d'un morceau, à 60 images/seconde.
 /// Stockage compact : ~325 octets/image, < 5 Mo pour 4 minutes.

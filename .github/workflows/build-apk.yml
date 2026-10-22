@@ -38,10 +38,16 @@ jobs:
         run: flutter pub get
 
       - name: Analyse statique
-        run: flutter analyze
+        shell: bash
+        run: |
+          set -o pipefail
+          flutter analyze 2>&1 | tee analyze.log
 
       - name: Tests unitaires
-        run: flutter test
+        shell: bash
+        run: |
+          set -o pipefail
+          flutter test 2>&1 | tee test.log
 
       - name: Build APK release
         shell: bash
@@ -49,15 +55,18 @@ jobs:
           set -o pipefail
           flutter build apk --release 2>&1 | tee build.log
 
-      - name: Publier le log complet en cas d'échec
+      - name: Publier les logs en cas d'échec (pour diagnostic)
         if: failure()
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout main -- 2>/dev/null || true
-          git add build.log
-          git commit -m "Log du build en échec (automatique)"
+          git add analyze.log test.log build.log 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "(aucun log capturé)" > analyze.log
+            git add analyze.log
+          fi
+          git commit -m "Logs de diagnostic [skip ci]"
           git push
 
       - name: Renommer l'artefact
