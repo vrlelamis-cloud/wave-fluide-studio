@@ -145,7 +145,8 @@ class VideoExporter {
       final encoders = ['h264_mediacodec', 'libx264'];
       for (final enc in encoders) {
         if (_cancelled) throw Exception('Export annulé');
-        final String pipePath = pipe; // copie locale non nulle
+        if (pipe == null) break; // tube impossible à recréer : repli PNG
+        final String pipePath = pipe;
         final vcodec = enc == 'libx264'
             ? '-c:v libx264 -profile:v high'
             : '-c:v h264_mediacodec';
