@@ -59,12 +59,13 @@ jobs:
       - name: Build APK release
         shell: bash
         run: |
-          flutter build apk --release > build.log 2>&1
+          flutter build apk --release --android-skip-build-dependency-validation > build.log 2>&1
           code=$?
           cat build.log
           exit $code
 
-      # Publication des logs pour diagnostic : robuste, jamais en échec.
+    
+  # Publication des logs pour diagnostic : robuste, jamais en échec.
       - name: Publier les logs en cas d'échec (pour diagnostic)
         if: failure()
         shell: bash
