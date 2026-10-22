@@ -35,11 +35,11 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _onTick(Duration elapsed) {
-    final dt = _last == Duration.zero
+    final double dt = _last == Duration.zero
         ? 1 / 60
         : (elapsed - _last).inMicroseconds / 1e6;
     _last = elapsed;
-    controller.tick(dt.clamp(0.001, 0.1));
+    controller.tick(dt.clamp(0.001, 0.1).toDouble());
     if (dt > 0) _fpsWindow.add(dt);
     if (_fpsWindow.length > 120) {
       _fpsWindow.removeAt(0);
@@ -160,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen>
                   label: 'Espace paroles',
                   value: controller.espaceParoles.toDouble(),
                   min: 0, max: 60, divisions: 12,
-                  display: '${controller.espaceParoles} %',
+                  display: controller.espaceParoles.toString() + ' %',
                   onChanged: (v) {
                     controller.espaceParoles = v.round();
                     controller.update();
@@ -170,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen>
                   label: 'Décalage vidéo',
                   value: controller.decalageVideo.toDouble(),
                   min: -120, max: 120, divisions: 48,
-                  display: '${controller.decalageVideo} ms',
+                  display: controller.decalageVideo.toString() + ' ms',
                   onChanged: (v) {
                     controller.decalageVideo = v.round();
                     controller.update();
@@ -180,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen>
                   label: 'Synchro',
                   value: controller.synchro.toDouble(),
                   min: -50, max: 400, divisions: 45,
-                  display: '${controller.synchro} ms',
+                  display: controller.synchro.toString() + ' ms',
                   onChanged: (v) {
                     controller.synchro = v.round();
                     controller.update();
@@ -195,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'L\'extrait démarre à la position actuelle du morceau',
+                      "L'extrait démarre à la position actuelle du morceau",
                       style: TextStyle(fontSize: 11, color: Color(0xFF6B7280)),
                     ),
                   ),
@@ -214,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen>
   // Barre de position + temps écoulé / durée.
   Widget _buildSeekBar() {
     final dur = controller.duration;
-    final pos = controller.position.clamp(0, dur);
+    final pos = controller.position.clamp(0.0, dur).toDouble();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Column(children: [
@@ -243,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen>
   String _fmtTime(double s) {
     final m = (s ~/ 60).toString().padLeft(2, '0');
     final sec = (s.round() % 60).toString().padLeft(2, '0');
-    return '$m:$sec';
+    return m + ':' + sec;
   }
 
   Widget _buildControls() {
@@ -303,12 +303,12 @@ class _HomeScreenState extends State<HomeScreen>
         itemBuilder: (context, i) {
           final active = i == controller.current;
           final name =
-              controller.names[i].replaceAll(RegExp('\.[^.]+$'), '');
+              controller.names[i].replaceAll(RegExp('\\.[^.]+\$'), '');
           return ListTile(
             dense: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             title: Text(
-              '${i + 1}. $name',
+              (i + 1).toString() + '. ' + name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -357,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen>
             trackHeight: 3,
           ),
           child: Slider(
-            value: value.clamp(min, max),
+            value: value.clamp(min, max).toDouble(),
             min: min,
             max: max,
             divisions: divisions,
@@ -397,7 +397,7 @@ class _HomeScreenState extends State<HomeScreen>
     final p = kPalettes[i];
     final selected = controller.paletteIndex == i;
     return Semantics(
-      label: 'Palette ${p.name}',
+      label: 'Palette ' + p.name,
       button: true,
       selected: selected,
       child: GestureDetector(
@@ -543,7 +543,7 @@ class _HomeScreenState extends State<HomeScreen>
             child: FilledButton(
               style: FilledButton.styleFrom(backgroundColor: Colors.red),
               onPressed: controller.cancelExport,
-              child: const Text('Annuler l\'export'),
+              child: const Text("Annuler l'export"),
             ),
           ),
         ]),
@@ -658,16 +658,14 @@ class _ResultZoneState extends State<_ResultZone> {
       await Gal.putVideo(widget.path, album: 'WaveFluide');
       setState(() => _msg = 'Enregistré dans Movies/WaveFluide');
     } catch (e) {
-      setState(() => _msg = 'Erreur d\'enregistrement : stockage plein ou indisponible');
+      setState(() => _msg = "Erreur d'enregistrement : stockage plein ou indisponible");
     }
   }
 
   Future<void> _share() async {
     try {
-      await SharePlus.instance.share(ShareParams(
-        files: [XFile(widget.path)],
-        mimeType: 'video/mp4',
-      ));
+      // API share_plus 10.x.
+      await Share.shareXFiles([XFile(widget.path)], mime: 'video/mp4');
     } catch (e) {
       setState(() => _msg = 'Partage impossible');
     }
