@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:just_audio/just_audio.dart';
 
 /// Horloge de lecture continue : just_audio ne donne sa position que
@@ -20,9 +18,6 @@ class PlayerClock {
   void sync({bool playing = true, double rate = 1.0}) {
     _playing = playing;
     _rate = rate > 0 ? rate : 1.0;
-    _anchorPos = player.position.inMilliseconds / 1000.0 *
-        (_rate != 1.0 ? _rate : 1.0);
-    // position est déjà en temps réel même avec speed != 1 ; on garde simple :
     _anchorPos = player.position.inMilliseconds / 1000.0;
     _watch
       ..reset()
@@ -53,7 +48,7 @@ class PlayerClock {
         _watch..reset()..start();
         p = real;
       } else if (diff.abs() > 0.008) {
-        // correction progressive : ±10 % de l'écart par interrogation
+        // correction progressive : la moitié de l'écart par interrogation
         _anchorPos += diff * 0.5;
         p += diff * 0.5;
       }

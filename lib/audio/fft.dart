@@ -8,9 +8,10 @@ class Fft {
   late final Float64List _cos;
   late final Float64List _sin;
   late final Float64List _hann;
-  final Float64List re;
-  final Float64List im;
-  final Float64List mag;
+  // late final : remplis dans le constructeur, sans allocation par image.
+  late final Float64List re;
+  late final Float64List im;
+  late final Float64List mag;
 
   Fft(this.n) {
     _cos = Float64List(n ~/ 2);
@@ -28,16 +29,15 @@ class Fft {
     mag = Float64List(n ~/ 2 + 1);
   }
 
-  /// Analyse la fenêtre de 2048 échantillons [x] (déjà fenêtrée Hann en place
-  /// dans [re]) et produit les magnitudes normalisées |X|/n des bins 0..n/2.
+  /// Analyse la fenêtre de 2048 échantillons [x] et produit les magnitudes
+  /// normalisées |X|/n des bins 0..n/2 (fenêtre de Hann appliquée ici).
   void magnitudes(Float64List window) {
     // Fenêtre de Hann appliquée pendant la copie.
     for (int i = 0; i < n; i++) {
       re[i] = window[i] * _hann[i];
       im[i] = 0.0;
     }
-    // FFT itérative radix-2 (Cooley-Tukey).
-    // Inversion binaire.
+    // FFT itérative radix-2 (Cooley-Tukey) : inversion binaire.
     int j = 0;
     for (int i = 1; i < n; i++) {
       int bit = n >> 1;
@@ -92,7 +92,7 @@ List<int> bandEdges() {
   final edges = List<int>.filled(17, 0);
   edges[0] = 2;
   for (int k = 1; k <= 16; k++) {
-    final double v = 2 * math.pow(300.0, k / 16);
+    final double v = 2 * math.pow(300.0, k / 16).toDouble();
     final int cand = v.floor();
     edges[k] = math.max(edges[k - 1] + 1, cand);
   }

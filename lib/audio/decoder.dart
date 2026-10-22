@@ -23,7 +23,9 @@ class Decoder {
     final out = '${dir.path}/wfs_${DateTime.now().microsecondsSinceEpoch}.wav';
     final rc = await FFmpegKit.execute(
         '-y -i "$srcPath" -ac 1 -ar 44100 -c:a pcm_s16le -f wav "$out"');
-    if (!ReturnCode.isSuccess(rc.getReturnCode())) {
+    // Dans ce fork, les accesseurs de session sont asynchrones.
+    final code = await rc.getReturnCode();
+    if (!ReturnCode.isSuccess(code)) {
       throw Exception('Fichier audio illisible ou format non pris en charge');
     }
     return out;
@@ -31,7 +33,8 @@ class Decoder {
 
   static Future<double> probeDuration(String path) async {
     final s = await FFprobeKit.getMediaInformation(path);
-    final d = s.getMediaInformation()?.getDuration();
+    final mi = await s.getMediaInformation();
+    final d = mi == null ? null : await mi.getDuration();
     return d == null ? 0 : (double.tryParse(d) ?? 0);
   }
 
@@ -97,7 +100,7 @@ class Decoder {
         for (int b = lo; b < hi; b++) {
           sum += bins255[b];
         }
-        final double x = (cnt <= 0 ? 0 : sum / cnt / 255.0);
+        final double x = (cnt <= 0 ? 0.0 : sum / cnt / 255.0);
         double v = (x - 0.22) / 0.78;
         if (v < 0) v = 0;
         bands[f * 16 + k] = v * (1 + k * 0.045);
@@ -130,7 +133,7 @@ class Decoder {
       for (int i = lo; i < hi; i++) {
         s += y2buf[i] * y2buf[i];
       }
-      env[f] = (hi == lo) ? 0 : math.sqrt(s / (hi - lo));
+      env[f] = (hi == lo) ? 0.0 : math.sqrt(s / (hi - lo));
     }
 
     return TrackFeatures(

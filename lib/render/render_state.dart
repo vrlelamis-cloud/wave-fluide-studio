@@ -112,7 +112,7 @@ class RenderState {
     }
 
     // --- Signaux dérivés ---
-    bass = math.min(1, (sm[0] + sm[1] + sm[2]) / 3);
+    bass = math.min(1.0, (sm[0] + sm[1] + sm[2]) / 3);
     bb = 0.4 * sm[0] + 0.3 * sm[1] + 0.2 * sm[2] + 0.1 * sm[3];
     bx = math.min(1.15, (1 - math.exp(-3.2 * bb)) / (1 - math.exp(-3.2)) * 1.1);
     double s4 = 0;
