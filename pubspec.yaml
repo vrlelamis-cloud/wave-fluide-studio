@@ -1,0 +1,53 @@
+name: wave_fluide_studio
+description: Ondulations musicales synchronisées et export vidéo MP4 hors temps réel.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Lecture audio (position, playlist, précédent/suivant)
+  just_audio: ^0.9.40
+  # Sélecteur de fichiers système (multi-sélection)
+  file_picker: ^8.1.2
+  # Aperçu vidéo du résultat exporté
+  video_player: ^2.9.2
+  # Partage (WhatsApp, CapCut...)
+  share_plus: ^10.0.2
+  # Garde l'écran allumé pendant l'export
+  wakelock_plus: ^1.2.8
+  # Dossiers cache / temp
+  path_provider: ^2.1.4
+  # Sauvegarde galerie (Movies/WaveFluide via MediaStore)
+  gal: ^2.3.0
+  # Fork maintenu de FFmpeg Kit (le projet d'origine est archivé).
+  # Saveur min-gpl : encodeur x264 (GPL) + aac + libavcodec complets.
+  # L'encodeur matériel h264_mediacodec est utilisé en priorité à l'exécution,
+  # x264 sert de repli. Remplacez par la saveur "min" si vous devez éviter la GPL
+  # (dans ce cas l'export utilise uniquement h264_mediacodec).
+  ffmpeg_kit_flutter_new: ^2.0.0
+  path: ^1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/fonts/
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+    - family: Righteous
+      fonts:
+        - asset: assets/fonts/Righteous-Regular.ttf

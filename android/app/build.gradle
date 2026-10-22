@@ -1,0 +1,50 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def ffmpegFlavor = "min-gpl-lts" // ou "min-lts" pour éviter la GPL (alors x264 indisponible)
+
+android {
+    namespace = "com.elvermoye.wavefluide"
+    compileSdk = 34
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    defaultConfig {
+        applicationId = "com.elvermoye.wavefluide"
+        minSdk = 24
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+    }
+
+    buildTypes {
+        release {
+            // Signature debug pour tester simplement ; remplacez par votre keystore.
+            signingConfig = signingConfigs.debug
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+// FFmpeg Kit : sélection de la saveur (voir variable ffmpegFlavor ci-dessus).
+// min-gpl fournit libx264 ; min n'inclut aucun code GPL.
+dependencies {
+    implementation "com.arthenica:ffmpeg-kit-${ffmpegFlavor}:6.0-2"
+}
