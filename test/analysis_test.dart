@@ -35,7 +35,7 @@ void main() {
     test('conversion dB en octets (plage -90..0)', () {
       expect(Fft.dbByte(1.0), 255); // 0 dBFS
       expect(Fft.dbByte(0.0), 0);
-      expect(Fft.dbByte(-1.0), 0);
+      expect(Fft.dbByte(-1.0), 0); // valeur aberrante : aucun NaN
     });
   });
 
@@ -79,7 +79,7 @@ void main() {
       expect(rs.sm[0], greaterThanOrEqualTo(0));
     });
 
-    test('pas de dépendance au taux d\'images', () {
+    test("pas de dépendance au taux d'images", () {
       double run(double dt) {
         final rs = RenderState();
         final fv = FrameView();
@@ -103,6 +103,8 @@ void main() {
   group('enveloppe de basse et ondes', () {
     test('kick synthétique 60 Hz toutes les 0,5 s -> ondes à ±1 image', () {
       // Génère un kick 60 Hz toutes les 0,5 s sur 2 secondes.
+      // Le premier battement commence à t = 0 : les déclenchemements
+      // attendus sont aux images 0, 30, 60 et 90 (à ±1 image près).
       const int sr = 44100;
       final pcm = Int16List(sr * 2);
       for (int i = 0; i < pcm.length; i++) {
@@ -119,19 +121,25 @@ void main() {
       final rs = RenderState();
       final fx = OrganicFX();
       final fv = FrameView();
-      // Image où le coup devrait se produire (0,5 s -> image 30).
-      int triggered = -1;
-      for (int f = 0; f < 60; f++) {
-        final double t = f / 60;
-        fv.read(feats, t);
+      final birthFrames = <int>[];
+      int lastBirths = 0;
+      for (int f = 0; f < 120; f++) {
+        fv.read(feats, f / 60);
         rs.step(1 / 60, fv, paused: false);
         fx.step(1 / 60, rs, unit: 400, height: 800);
-        if (fx.waveCount > 0 && triggered < 0) {
-          triggered = f;
+        if (fx.waveBirths > lastBirths) {
+          birthFrames.add(f);
+          lastBirths = fx.waveBirths;
         }
       }
-      expect(triggered, greaterThanOrEqualTo(29));
-      expect(triggered, lessThanOrEqualTo(31));
+      // Au moins les 4 battements (0 s, 0,5 s, 1 s, 1,5 s).
+      expect(birthFrames.length, greaterThanOrEqualTo(4));
+      // Le premier kick est à t = 0 : tolérance 0..2 images.
+      expect(birthFrames[0], lessThanOrEqualTo(2));
+      // Les battements suivants : images 30, 60, 90 à ±1 image près.
+      expect((birthFrames[1] - 30).abs(), lessThan(2));
+      expect((birthFrames[2] - 60).abs(), lessThan(2));
+      expect((birthFrames[3] - 90).abs(), lessThan(2));
     });
   });
 }

@@ -78,6 +78,7 @@ class Fft {
   /// dB normalisés en octets : dB = 20 log10(m + 1e-9),
   /// octet = clamp((dB + 90)/90 * 255, 0, 255)  (plage -90..0 dB).
   static int dbByte(double m) {
+    if (m <= 1e-9) return 0; // silence ou valeur négative : octet 0 (évite NaN)
     final double db = 20 * math.log(m + 1e-9) / math.ln10;
     double v = (db + 90) / 90 * 255;
     if (v < 0) v = 0;

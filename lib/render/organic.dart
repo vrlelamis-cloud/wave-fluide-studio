@@ -13,12 +13,17 @@ class OrganicFX {
   double _clock = 0;
   double _lastWaveTime = -10;
   double _lastSquashTime = -10;
+  int _waveBirths = 0; // nombre de déclenchements (3 ondes par coup de basse)
+
+  /// Nombre de déclenchements d'ondes depuis le début (pour les tests).
+  int get waveBirths => _waveBirths;
 
   void reset() {
     _waves.clear();
     _notes.clear();
     _lastWaveTime = -10;
     _lastSquashTime = -10;
+    _waveBirths = 0;
   }
 
   /// Fait vivre ondes et notes pour l'image suivante. [unit] = min(W,H).
@@ -33,6 +38,7 @@ class OrganicFX {
         (_clock - _lastWaveTime) > 0.06 &&
         _waves.length < 24) {
       _lastWaveTime = _clock;
+      _waveBirths++;
       for (int j = 0; j < 3; j++) {
         _waves.add(_Wave(
           delay: j * 0.1,
