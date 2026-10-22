@@ -1,1 +1,54 @@
-(aucun log capturé)
+Analyzing wave-fluide-studio...                                 
+
+  error • The argument type 'Future<ReturnCode?>' can't be assigned to the parameter type 'ReturnCode?'.  • lib/audio/decoder.dart:26:31 • argument_type_not_assignable
+  error • All final variables must be initialized, but 'im', 'mag', and 1 others aren't. Try adding initializers for the fields • lib/audio/fft.dart:15:3 • final_not_initialized_constructor
+  error • 're' can't be used as a setter because it's final. Try finding a different setter, or making 're' non-final • lib/audio/fft.dart:26:5 • assignment_to_final
+  error • 'im' can't be used as a setter because it's final. Try finding a different setter, or making 'im' non-final • lib/audio/fft.dart:27:5 • assignment_to_final
+  error • 'mag' can't be used as a setter because it's final. Try finding a different setter, or making 'mag' non-final • lib/audio/fft.dart:28:5 • assignment_to_final
+  error • A value of type 'num' can't be assigned to a variable of type 'double'. Try changing the type of the variable, or casting the right-hand type to 'double' • lib/audio/fft.dart:95:22 • invalid_assignment
+warning • Unused import: 'dart:async'. Try removing the import directive • lib/audio/player_clock.dart:1:8 • unused_import
+  error • A value of type 'Future<String?>' can't be assigned to a variable of type 'String?'. Try changing the type of the variable, or casting the right-hand type to 'String?' • lib/export/exporter.dart:130:14 • invalid_assignment
+warning • The value of the local variable 'err' isn't used. Try removing the variable or using it • lib/export/exporter.dart:145:15 • unused_local_variable
+  error • The argument type 'Future<ReturnCode?>' can't be assigned to the parameter type 'ReturnCode?'.  • lib/export/exporter.dart:165:38 • argument_type_not_assignable
+   info • Unnecessary braces in a string interpolation. Try removing the braces • lib/export/exporter.dart:169:42 • unnecessary_brace_in_string_interps
+warning • The left operand can't be null, so the right operand is never executed. Try removing the operator and the right operand • lib/export/exporter.dart:169:79 • dead_null_aware_expression
+  error • The method 'getOutputAsString' isn't defined for the type 'FFmpegSession'. Try correcting the name to the name of an existing method, or defining a method named 'getOutputAsString' • lib/export/exporter.dart:169:81 • undefined_method
+  error • The argument type 'String?' can't be assigned to the parameter type 'String'.  • lib/export/exporter.dart:175:26 • argument_type_not_assignable
+  error • The argument type 'String?' can't be assigned to the parameter type 'String'.  • lib/export/exporter.dart:202:43 • argument_type_not_assignable
+  error • The argument type 'String?' can't be assigned to the parameter type 'String'.  • lib/export/exporter.dart:206:43 • argument_type_not_assignable
+  error • A value of type 'Future<String?>' can't be assigned to a variable of type 'String?'. Try changing the type of the variable, or casting the right-hand type to 'String?' • lib/export/exporter.dart:207:18 • invalid_assignment
+  error • The argument type 'Future<ReturnCode?>' can't be assigned to the parameter type 'ReturnCode?'.  • lib/export/exporter.dart:254:31 • argument_type_not_assignable
+  error • The method 'getOutputAsString' isn't defined for the type 'FFmpegSession'. Try correcting the name to the name of an existing method, or defining a method named 'getOutputAsString' • lib/export/exporter.dart:255:54 • undefined_method
+   info • The import of 'palettes.dart' is unnecessary because all of the used elements are also provided by the import of 'scene.dart'. Try removing the import directive • lib/render/organic.dart:4:8 • unnecessary_import
+   info • Use interpolation to compose strings and values. Try using string interpolation to build the composite string • lib/render/palettes.dart:11:41 • prefer_interpolation_to_compose_strings
+  error • The method 'LinearGradient' isn't defined for the type 'Scene'. Try correcting the name to the name of an existing method, or defining a method named 'LinearGradient' • lib/render/scene.dart:38:24 • undefined_method
+  error • Undefined name 'Alignment'. Try correcting the name to one that is defined, or defining the name • lib/render/scene.dart:39:18 • undefined_identifier
+  error • Undefined name 'Alignment'. Try correcting the name to one that is defined, or defining the name • lib/render/scene.dart:40:16 • undefined_identifier
+  error • The function 'LinearGradient' isn't defined. Try importing the library that defines 'LinearGradient', correcting the name to the name of an existing function, or defining a function named 'LinearGradient' • lib/render/scene.dart:77:20 • undefined_function
+  error • Undefined name 'Alignment'. Try correcting the name to one that is defined, or defining the name • lib/render/scene.dart:78:18 • undefined_identifier
+  error • Undefined name 'Alignment'. Try correcting the name to one that is defined, or defining the name • lib/render/scene.dart:79:16 • undefined_identifier
+  error • The function 'LinearGradient' isn't defined. Try importing the library that defines 'LinearGradient', correcting the name to the name of an existing function, or defining a function named 'LinearGradient' • lib/render/scene.dart:230:22 • undefined_function
+  error • Undefined name 'Alignment'. Try correcting the name to one that is defined, or defining the name • lib/render/scene.dart:231:20 • undefined_identifier
+  error • Undefined name 'Alignment'. Try correcting the name to one that is defined, or defining the name • lib/render/scene.dart:232:18 • undefined_identifier
+  error • The getter 'rect' isn't defined for the type 'RRect'. Try importing the library that defines 'rect', correcting the name to the name of an existing getter, or defining a getter or field named 'rect' • lib/render/scene.dart:240:31 • undefined_getter
+  error • The function 'LinearGradient' isn't defined. Try importing the library that defines 'LinearGradient', correcting the name to the name of an existing function, or defining a function named 'LinearGradient' • lib/render/scene.dart:247:22 • undefined_function
+  error • Undefined name 'Alignment'. Try correcting the name to one that is defined, or defining the name • lib/render/scene.dart:248:20 • undefined_identifier
+  error • Undefined name 'Alignment'. Try correcting the name to one that is defined, or defining the name • lib/render/scene.dart:249:18 • undefined_identifier
+  error • The getter 'rect' isn't defined for the type 'RRect'. Try importing the library that defines 'rect', correcting the name to the name of an existing getter, or defining a getter or field named 'rect' • lib/render/scene.dart:256:31 • undefined_getter
+warning • The value of the local variable 'm' isn't used. Try removing the variable or using it • lib/render/scene.dart:290:49 • unused_local_variable
+  error • The function 'LinearGradient' isn't defined. Try importing the library that defines 'LinearGradient', correcting the name to the name of an existing function, or defining a function named 'LinearGradient' • lib/render/scene.dart:335:20 • undefined_function
+  error • Undefined name 'Alignment'. Try correcting the name to one that is defined, or defining the name • lib/render/scene.dart:336:14 • undefined_identifier
+  error • Undefined name 'Alignment'. Try correcting the name to one that is defined, or defining the name • lib/render/scene.dart:337:12 • undefined_identifier
+   info • Unnecessary escape in string literal. Remove the '\' escape • lib/ui/app_state.dart:149:47 • unnecessary_string_escapes
+  error • Expected an identifier • lib/ui/app_state.dart:149:55 • missing_identifier
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/ui/home_screen.dart:94:22 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation • lib/ui/home_screen.dart:96:24 • prefer_const_constructors
+  error • The argument type 'num' can't be assigned to the parameter type 'double'.  • lib/ui/home_screen.dart:228:20 • argument_type_not_assignable
+  error • The argument type 'num' can't be assigned to the parameter type 'double'.  • lib/ui/home_screen.dart:234:25 • argument_type_not_assignable
+   info • Unnecessary escape in string literal. Remove the '\' escape • lib/ui/home_screen.dart:306:54 • unnecessary_string_escapes
+  error • Expected an identifier • lib/ui/home_screen.dart:306:62 • missing_identifier
+   info • Use 'const' for final variables initialized to a constant value. Try replacing 'final' with 'const' • lib/ui/home_screen.dart:435:5 • prefer_const_declarations
+  error • Undefined name 'SharePlus'. Try correcting the name to one that is defined, or defining the name • lib/ui/home_screen.dart:667:13 • undefined_identifier
+  error • The method 'ShareParams' isn't defined for the type '_ResultZoneState'. Try correcting the name to the name of an existing method, or defining a method named 'ShareParams' • lib/ui/home_screen.dart:667:38 • undefined_method
+
+50 issues found. (ran in 12.7s)
