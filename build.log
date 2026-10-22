@@ -101,22 +101,6 @@ Preparing "Install CMake 3.22.1 v.3.22.1".
 Installing CMake 3.22.1 in /usr/local/lib/android/sdk/cmake/3.22.1
 "Install CMake 3.22.1 v.3.22.1" complete.
 "Install CMake 3.22.1 v.3.22.1" finished.
-
-FAILURE: Build failed with an exception.
-
-* What went wrong:
-Execution failed for task ':app:processReleaseResources'.
-> A failure occurred while executing com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask$TaskAction
-   > Android resource linking failed
-     ERROR: /home/runner/work/wave-fluide-studio/wave-fluide-studio/android/app/build/intermediates/packaged_manifests/release/processReleaseManifestForPackage/AndroidManifest.xml:40: AAPT: error: resource mipmap/ic_launcher (aka com.elvermoye.wavefluide:mipmap/ic_launcher) not found.
-
-
-* Try:
-> Run with --stacktrace option to get the stack trace.
-> Run with --info or --debug option to get more log output.
-> Run with --scan to get full insights.
-> Get more help at https://help.gradle.org.
-
-BUILD FAILED in 4m 11s
-Running Gradle task 'assembleRelease'...                          252.5s
-Gradle task assembleRelease failed with exit code 1
+Caught exception: Already watching path: /home/runner/work/wave-fluide-studio/wave-fluide-studio/android
+Running Gradle task 'assembleRelease'...                          295.6s
+Gradle build failed to produce an .apk file. It's likely that this file was generated under /home/runner/work/wave-fluide-studio/wave-fluide-studio/build, but the tool couldn't find it.
