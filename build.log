@@ -1,6 +1,12 @@
 Upgrading gradle.properties
 Upgrading gradle.properties
 Running Gradle task 'assembleRelease'...                        
+Warning: Flutter support for your project's Gradle version (8.14.0) will soon be dropped. Please upgrade your Gradle version to a version of at least 9.1.0 soon.
+Alternatively, use the flag "--android-skip-build-dependency-validation" to bypass this check.
+
+Potential fix: Your project's gradle version is typically defined in the gradle wrapper file. By default, this can be found at /home/runner/work/wave-fluide-studio/wave-fluide-studio/android/gradle/wrapper/gradle-wrapper.properties. 
+For more information, see https://docs.gradle.org/current/userguide/gradle_wrapper.html.
+
 
 FAILURE: Build failed with an exception.
 
@@ -10,11 +16,11 @@ Build file '/home/runner/work/wave-fluide-studio/wave-fluide-studio/android/app/
 * What went wrong:
 An exception occurred applying plugin request [id: 'dev.flutter.flutter-gradle-plugin']
 > Failed to apply plugin 'dev.flutter.flutter-gradle-plugin'.
-   > Error: Your project's Gradle version (8.7.0) is lower than Flutter's minimum supported version of 8.14.0. Please upgrade your Gradle version. 
+   > Error: Your project's Android Gradle Plugin version (Android Gradle Plugin version 8.5.1) is lower than Flutter's minimum supported version of Android Gradle Plugin version 8.11.1. Please upgrade your Android Gradle Plugin version. 
      Alternatively, use the flag "--android-skip-build-dependency-validation" to bypass this check.
 
-     Potential fix: Your project's gradle version is typically defined in the gradle wrapper file. By default, this can be found at /home/runner/work/wave-fluide-studio/wave-fluide-studio/android/gradle/wrapper/gradle-wrapper.properties. 
-     For more information, see https://docs.gradle.org/current/userguide/gradle_wrapper.html.
+     Potential fix: Your project's AGP version is typically defined in the plugins block of the `settings.gradle` file (/home/runner/work/wave-fluide-studio/wave-fluide-studio/android/settings.gradle), by a plugin with the id of com.android.application. 
+     If you don't see a plugins block, your project was likely created with an older template version. In this case it is most likely defined in the top-level build.gradle file (/home/runner/work/wave-fluide-studio/wave-fluide-studio/android/build.gradle) by the following line in the dependencies block of the buildscript: "classpath 'com.android.tools.build:gradle:<version>'".
 
 
 * Try:
@@ -23,8 +29,8 @@ An exception occurred applying plugin request [id: 'dev.flutter.flutter-gradle-p
 > Run with --scan to get full insights.
 > Get more help at https://help.gradle.org.
 
-BUILD FAILED in 1m 15s
-Running Gradle task 'assembleRelease'...                           75.7s
+BUILD FAILED in 1m 36s
+Running Gradle task 'assembleRelease'...                           98.1s
 
 ┌─ Flutter Fix ────────────────────────────────────────────────────────────────────────┐
 │ [!] Starting AGP 9+, only the new DSL interface will be read.                        │
