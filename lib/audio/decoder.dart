@@ -11,11 +11,13 @@ import 'package:path_provider/path_provider.dart';
 import 'features.dart';
 import 'fft.dart';
 
-/// Décode n'importe quel format audio vers WAV PCM 16 bits mono 44 100 Hz
-/// (dans le cache), puis charge et analyse en Isolate.
+const int kSampleRate = 44100;
+
+/// Décode n'importe quel format audio (mp3, m4a, aac, wav, ogg, opus, flac,
+/// amr, 3gp) vers WAV PCM 16 bits mono 44 100 Hz dans le cache, puis charge
+/// et analyse le signal (FFT, bandes, enveloppe de basse) hors du fil UI.
 class Decoder {
-  /// Convertit [srcPath] en WAV mono 44,1 kHz dans le cache.
-  /// Renvoie le chemin du WAV, ou jette une exception lisible.
+  /// Conversion FFmpeg vers WAV mono 44,1 kHz.
   static Future<String> toWav(String srcPath) async {
     final dir = await getTemporaryDirectory();
     final out = '${dir.path}/wfs_${DateTime.now().microsecondsSinceEpoch}.wav';
@@ -29,54 +31,43 @@ class Decoder {
 
   static Future<double> probeDuration(String path) async {
     final s = await FFprobeKit.getMediaInformation(path);
-    final info = s.getMediaInformation();
-    final d = info?.getDuration();
-    return d == null ? 0 : double.tryParse(d) ?? 0;
+    final d = s.getMediaInformation()?.getDuration();
+    return d == null ? 0 : (double.tryParse(d) ?? 0);
   }
 
-  /// Analyse complète en Isolate, avec progression (analyse progressive :
-  /// [onProgress] est appelé avec le nombre d'images déjà prêtes).
-  static Future<TrackFeatures> analyze(
-    String wavPath, {
-    void Function(double secondsReady)? onProgress,
-  }) async {
-    final data = await Isolate.run(() => _analyzeSync(wavPath));
-    return data as TrackFeatures;
+  /// Analyse complète en Isolate (aucun calcul sur le fil d'interface).
+  static Future<TrackFeatures> analyze(String wavPath) async {
+    return await Isolate.run(() => analyzeWavFile(wavPath));
   }
 
-  // Version bloquante exécutée dans l'Isolate. Pour rester simple et robuste,
-  // l'analyse est faite d'un bloc ; la progression est simulée par tranches
-  // uniquement si un ReceivePort est fourni (voir analyzeProgressive).
-  static TrackFeatures _analyzeSync(String wavPath) {
-    final file = File(wavPath);
-    final bytes = file.readAsBytesSync();
-    // Saut de l'en-tête WAV (recherche du marqueur "data").
+  /// Lecture du WAV + analyse (bloquant, à appeler depuis un Isolate).
+  static TrackFeatures analyzeWavFile(String wavPath) {
+    final bytes = File(wavPath).readAsBytesSync();
+    // Recherche du bloc « data ».
     int dataStart = 44;
-    for (int i = 12; i + 8 < bytes.length; i++) {
+    for (int i = 12; i + 8 <= bytes.length; i++) {
       if (bytes[i] == 0x64 && bytes[i + 1] == 0x61 &&
           bytes[i + 2] == 0x74 && bytes[i + 3] == 0x61) {
-        final int size = bytes[i + 4] |
-            (bytes[i + 5] << 8) |
-            (bytes[i + 6] << 16) |
-            (bytes[i + 7] << 24);
         dataStart = i + 8;
-        final int avail = bytes.length - dataStart;
-        final int n = math.min(size, avail) ~/ 2;
         break;
       }
     }
-    // PCM 16 bits signé little endian -> Int16List.
     final int nSamples = (bytes.length - dataStart) ~/ 2;
     final pcm = Int16List(nSamples);
     final bd = ByteData.sublistView(bytes, dataStart);
     for (int i = 0; i < nSamples; i++) {
       pcm[i] = bd.getInt16(i * 2, Endian.little);
     }
+    return analyzePcm(pcm);
+  }
 
-    const int sr = 44100;
+  /// Analyse publique (testable) : spectre 16 bandes + enveloppe basse
+  /// + forme d'onde, image par image à 60 Hz.
+  static TrackFeatures analyzePcm(Int16List pcm) {
+    const int sr = kSampleRate;
     const int fps = 60;
-    final int nFrames =
-        math.max(1, (nSamples / sr * fps).round());
+    final int nSamples = pcm.length;
+    final int nFrames = math.max(1, (nSamples / sr * fps).round());
     final bands = Float32List(nFrames * 16);
     final env = Float32List(nFrames);
     final wave = Int16List(nFrames * 128);
@@ -84,37 +75,33 @@ class Decoder {
     final fft = Fft(2048);
     final window = Float64List(2048);
     final edges = bandEdges();
-    final bytes255 = Uint8List(1024);
+    final bins255 = Uint8List(1024);
 
-    // --- Passe 1 : spectre et bandes, image par image ---
+    // --- Passe 1 : spectre, bandes, forme d'onde ---
     for (int f = 0; f < nFrames; f++) {
       final int center = (f * sr / fps).round();
       final int start = center - 1024;
-      // Fenêtre centrée sur l'instant de l'image (bords gérés par zéros).
       for (int i = 0; i < 2048; i++) {
         final int idx = start + i;
         window[i] = (idx >= 0 && idx < nSamples) ? pcm[idx] / 32768.0 : 0.0;
       }
       fft.magnitudes(window);
       for (int b = 0; b < 1024; b++) {
-        bytes255[b] = Fft.dbByte(b + 1 < fft.mag.length ? fft.mag[b + 1] : 0.0);
+        bins255[b] = Fft.dbByte(fft.mag[b + 1]);
       }
       for (int k = 0; k < 16; k++) {
         final int lo = edges[k];
-        final int hi = math.max(lo + 1, edges[k + 1]);
+        final int hi = math.max(lo + 1, math.min(1024, edges[k + 1]));
         int sum = 0;
-        int cnt = 0;
-        for (int b = lo; b < hi && b < 1024; b++) {
-          sum += bytes255[b];
-          cnt++;
+        final int cnt = hi - lo;
+        for (int b = lo; b < hi; b++) {
+          sum += bins255[b];
         }
-        final double x = (cnt == 0 ? 0 : sum / cnt / 255.0);
-        // Niveau v_k (§5), sans normalisation par bande.
+        final double x = (cnt <= 0 ? 0 : sum / cnt / 255.0);
         double v = (x - 0.22) / 0.78;
         if (v < 0) v = 0;
         bands[f * 16 + k] = v * (1 + k * 0.045);
       }
-      // Forme d'onde : 128 échantillons, un sur 8, autour du centre.
       final int ws = center - 512;
       for (int j = 0; j < 128; j++) {
         final int idx = ws + j * 8;
@@ -125,49 +112,25 @@ class Decoder {
     // --- Passe 2 : enveloppe de basse « précise » ---
     // Deux filtres passe-bas à un pôle cascadés à 140 Hz.
     final double alpha = 1 - math.exp(-2 * math.pi * 140 / sr);
-    double y = 0, y2 = 0;
-    // RMS glissante de y2 sur 256 échantillons (fenêtre centrée).
-    final ring = Float64List(256);
-    double sumSq = 0;
+    final y2buf = Float32List(nSamples);
+    double a1 = 0, b1 = 0;
     for (int i = 0; i < nSamples; i++) {
       final double x = pcm[i] / 32768.0;
-      y += alpha * (x - y);
-      y2 += alpha * (y - y2);
-      final int slot = i & 255;
-      sumSq -= ring[slot];
-      ring[slot] = y2 * y2;
-      sumSq += ring[slot];
-      // Quand on franchit le centre de la fenêtre de l'image f, on mémorise.
-      final int nextFrameCenter = (((i + 1) * fps) / sr).floor() + 1;
-      // Approche plus simple : recalcule à la fin par frame ci-dessous.
+      a1 += alpha * (x - a1);
+      b1 += alpha * (a1 - b1);
+      y2buf[i] = b1;
     }
-    // Pour rester exact (fenêtre centrée), on refiltre une deuxième fois en
-    // gardant tout y2 échantillon par échantillon est coûteux en mémoire ;
-    // on utilise donc un tampon réduit : on refiltre par blocs.
-    // -> Implémentation retenue : refiltrer par tranches autour de chaque
-    //    frame serait trop lent ; on garde une deuxième passe complète avec
-    //    un tampon de y2 décimé ×1 (44,1 kHz Float32).
-    final y2buf = Float32List(nSamples);
-    {
-      double a = 0, b = 0;
-      for (int i = 0; i < nSamples; i++) {
-        final double x = pcm[i] / 32768.0;
-        a += alpha * (x - a);
-        b += alpha * (a - b);
-        y2buf[i] = b;
-      }
-    }
+    // RMS sur fenêtre de 256 échantillons centrée sur l'instant de l'image.
     for (int f = 0; f < nFrames; f++) {
       final int center = (f * sr / fps).round();
       int lo = center - 128, hi = center + 128;
       if (lo < 0) lo = 0;
       if (hi > nSamples) hi = nSamples;
       double s = 0;
-      int cnt = hi - lo;
       for (int i = lo; i < hi; i++) {
         s += y2buf[i] * y2buf[i];
       }
-      env[f] = cnt == 0 ? 0 : math.sqrt(s / cnt);
+      env[f] = (hi == lo) ? 0 : math.sqrt(s / (hi - lo));
     }
 
     return TrackFeatures(
@@ -177,19 +140,5 @@ class Decoder {
       env: env,
       wave: wave,
     );
-  }
-
-  /// Analyse progressive : lance l'analyse dans un Isolate et appelle
-  /// [onReady] dès que les [initialSeconds] premières secondes sont prêtes.
-  /// Renvoie un Future qui se termine quand TOUT le morceau est analysé.
-  static Future<TrackFeatures> analyzeProgressive(
-    String wavPath, {
-    required void Function(TrackFeatures) onReady,
-  }) async {
-    // Version simple : analyse complète puis notification. L'analyse d'un
-    // morceau de 4 minutes prend ~2-4 s sur un appareil d'entrée de gamme.
-    final f = await analyze(wavPath);
-    onReady(f);
-    return f;
   }
 }
