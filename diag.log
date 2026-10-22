@@ -1,28 +1,28 @@
 === machine ===
-Linux runnervm8k3b6 6.17.0-1022-azure #22-Ubuntu SMP Mon Jul 27 17:24:03 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Linux runnervmxehtw 7.0.0-1017-azure #17~24.04.1-Ubuntu SMP PREEMPT Thu Sep 24 18:46:57 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
 Flutter 3.47.7 • channel stable • https://github.com/flutter/flutter.git
 Framework • revision abaf9c5237 (2 weeks ago) • 2026-10-08 09:51:21 -0700
 Engine • hash d8a2d6c768c334d53e16277f837970ffa1e2de81 (revision deb287481e) (14 days ago) • 2026-10-07 17:09:12.000Z
 Tools • Dart 3.13.5 • DevTools 2.60.0
 === contenu du répertoire ===
-total 112
-drwxr-xr-x 10 runner runner  4096 Oct 22 08:06 .
-drwxr-xr-x  3 runner runner  4096 Oct 22 08:05 ..
-drwxr-xr-x  4 runner runner  4096 Oct 22 08:06 .dart_tool
--rw-r--r--  1 runner runner 11146 Oct 22 08:06 .flutter-plugins-dependencies
-drwxr-xr-x  7 runner runner  4096 Oct 22 08:05 .git
-drwxr-xr-x  3 runner runner  4096 Oct 22 08:05 .github
--rw-r--r--  1 runner runner  2389 Oct 22 08:05 README.md
--rw-r--r--  1 runner runner   138 Oct 22 08:06 analysis_options.yaml
--rw-r--r--  1 runner runner 10125 Oct 22 08:06 analyze.log
-drwxr-xr-x  6 runner runner  4096 Oct 22 08:08 android
-drwxr-xr-x  3 runner runner  4096 Oct 22 08:05 assets
-drwxr-xr-x  5 runner runner  4096 Oct 22 08:06 build
--rw-r--r--  1 runner runner  3793 Oct 22 08:08 build.log
--rw-r--r--  1 runner runner   479 Oct 22 08:08 diag.log
-drwxr-xr-x  6 runner runner  4096 Oct 22 08:05 lib
--rw-r--r--  1 runner runner 21482 Oct 22 08:06 pubspec.lock
--rw-r--r--  1 runner runner  1588 Oct 22 08:05 pubspec.yaml
-drwxr-xr-x  2 runner runner  4096 Oct 22 08:05 test
--rw-r--r--  1 runner runner   414 Oct 22 08:06 test.log
+total 116
+drwxr-xr-x 10 runner runner  4096 Oct 22 10:01 .
+drwxr-xr-x  3 runner runner  4096 Oct 22 09:59 ..
+drwxr-xr-x  4 runner runner  4096 Oct 22 10:01 .dart_tool
+-rw-r--r--  1 runner runner 11146 Oct 22 10:01 .flutter-plugins-dependencies
+drwxr-xr-x  7 runner runner  4096 Oct 22 10:00 .git
+drwxr-xr-x  3 runner runner  4096 Oct 22 10:00 .github
+-rw-r--r--  1 runner runner  2389 Oct 22 10:00 README.md
+-rw-r--r--  1 runner runner   138 Oct 22 10:01 analysis_options.yaml
+-rw-r--r--  1 runner runner 10125 Oct 22 10:01 analyze.log
+drwxr-xr-x  5 runner runner  4096 Oct 22 10:01 android
+drwxr-xr-x  3 runner runner  4096 Oct 22 10:00 assets
+drwxr-xr-x  5 runner runner  4096 Oct 22 10:01 build
+-rw-r--r--  1 runner runner  4595 Oct 22 10:03 build.log
+-rw-r--r--  1 runner runner   494 Oct 22 10:03 diag.log
+drwxr-xr-x  6 runner runner  4096 Oct 22 10:00 lib
+-rw-r--r--  1 runner runner 21482 Oct 22 10:01 pubspec.lock
+-rw-r--r--  1 runner runner  1588 Oct 22 10:00 pubspec.yaml
+drwxr-xr-x  2 runner runner  4096 Oct 22 10:00 test
+-rw-r--r--  1 runner runner   414 Oct 22 10:01 test.log
 === fin diagnostic ===
