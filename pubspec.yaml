@@ -1,4 +1,4 @@
-name: wave_fluide_studio
+successfully downloaded text file (SHA: 2194ae0433a3f25d651761ee6391240161d79e8d)name: wave_fluide_studio
 description: Ondulations musicales synchronisées et export vidéo MP4 hors temps réel.
 publish_to: 'none'
 version: 1.0.0+1
@@ -28,7 +28,7 @@ dependencies:
   # L'encodeur matériel h264_mediacodec est utilisé en priorité à l'exécution,
   # x264 sert de repli. Remplacez par la saveur "min" si vous devez éviter la GPL
   # (dans ce cas l'export utilise uniquement h264_mediacodec).
-  ffmpeg_kit_flutter_new: ^2.0.0
+  ffmpeg_kit_flutter_new: ^4.6.7
   path: ^1.9.0
 
 dev_dependencies:
