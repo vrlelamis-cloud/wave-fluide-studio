@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show MethodChannel;
 import 'package:just_audio/just_audio.dart';
 
 import '../audio/decoder.dart';
@@ -29,14 +30,14 @@ class AppController extends ChangeNotifier {
   String status = 'Importez de la musique pour commencer';
 
   // Réglages (valeurs par défaut du cahier des charges)
-  int espaceParoles = 40;     // 0..60 %, pas 5
-  int decalageVideo = 0;      // -120..120 ms, pas 5
-  int synchro = 0;            // -50..400 ms, pas 10
-  int paletteIndex = 0;       // 0 = Origine
+  int espaceParoles = 40;     // 0..60 %, pas 5, défaut 40
+  int decalageVideo = 0;      // -120..120 ms, pas 5, défaut 0
+  int synchro = 0;            // -50..400 ms, pas 10, défaut 0
+  int paletteIndex = 0;       // 0 = Origine (aucune palette)
   bool oled = true;
   VizStyle style = VizStyle.fluide;
   int formatIndex = 0;        // 9:16, 16:9, TikTok HD, Plein écran
-  int extraitSec = 30;        // 15, 30, 60, -1 = complet
+  int extraitSec = 30;        // 15, 30 (défaut), 60, -1 = complet
 
   // Export
   bool exporting = false;
@@ -50,7 +51,9 @@ class AppController extends ChangeNotifier {
   final OrganicFX fx = OrganicFX();
   final FrameView fv = FrameView();
   final ValueNotifier<int> repaint = ValueNotifier<int>(0);
-  final serviceChannel = const MethodChannelX();
+
+  double _screenW = 1080, _screenH = 1920;
+  void setScreenSize(double w, double h) { _screenW = w; _screenH = h; }
 
   ExportFormat get format {
     switch (formatIndex) {
@@ -58,44 +61,55 @@ class AppController extends ChangeNotifier {
       case 1: return ExportFormat.f16x9;
       case 2: return ExportFormat.tiktokHd;
       default:
-        return ExportFormat.fullscreen(
-            _screenW.toInt(), _screenH.toInt());
+        return ExportFormat.fullscreen(_screenW.round(), _screenH.round());
     }
   }
-
-  double _screenW = 1080, _screenH = 1920;
-  void setScreenSize(double w, double h) { _screenW = w; _screenH = h; }
 
   // ------------------------------------------------------------------
   // Import et playlist
   // ------------------------------------------------------------------
   Future<void> importFiles() async {
-    final res = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: const [
-        'mp3', 'm4a', 'aac', 'wav', 'ogg', 'opus', 'flac', 'amr', '3gp'
-      ],
-      allowMultiple: true,
-    );
+    FilePickerResult? res;
+    try {
+      res = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: const [
+          'mp3', 'm4a', 'aac', 'wav', 'ogg', 'opus', 'flac', 'amr', '3gp'
+        ],
+        allowMultiple: true,
+      );
+    } catch (_) {
+      status = 'Sélecteur de fichiers indisponible';
+      notifyListeners();
+      return;
+    }
     if (res == null || res.files.isEmpty) return;
-    final added = <String>[];
+    final int firstAdded = paths.length;
+    int added = 0;
     for (final f in res.files) {
       final p = f.path;
       if (p != null && File(p).existsSync()) {
         paths.add(p);
         names.add(f.name);
-        added.add(p);
+        added++;
       }
     }
-    if (added.isEmpty) {
+    if (added == 0) {
       status = 'Aucun fichier importé';
-    } else {
-      status = '${added.length} morceau(s) importé(s)';
-      await _rebuildPlaylist(startIndex: current < 0 ? paths.length - added.length : current);
+      notifyListeners();
+      return;
+    }
+    status = '$added morceau(s) importé(s)';
+    await _rebuildPlaylist(
+        startIndex: current < 0 ? firstAdded : current);
+    if (current < 0) {
+      current = firstAdded;
+      await _loadFeatures();
     }
     notifyListeners();
   }
 
+  bool _playlistBound = false;
   Future<void> _rebuildPlaylist({int startIndex = 0}) async {
     try {
       final sources = <AudioSource>[];
@@ -104,31 +118,39 @@ class AppController extends ChangeNotifier {
       }
       await player.setAudioSource(
         ConcatenatingAudioSource(children: sources),
-        initialIndex: startIndex < 0 ? 0 : startIndex,
+        initialIndex: startIndex.clamp(0, paths.length - 1),
       );
-      current = startIndex < 0 ? 0 : startIndex;
+      current = startIndex.clamp(0, paths.length - 1);
     } catch (e) {
       status = 'Fichier illisible';
     }
-    player.currentIndexStream.listen((i) {
-      if (i != null && i != current) {
-        current = i;
-        _loadFeatures();
-        notifyListeners();
-      }
-    });
-    player.playerStateStream.listen((s) {
-      notifyListeners();
-    });
+    if (!_playlistBound) {
+      _playlistBound = true;
+      player.currentIndexStream.listen((i) {
+        if (i != null && i != current) {
+          current = i;
+          _loadFeatures();
+          notifyListeners();
+        }
+      });
+      player.playerStateStream.listen((_) => notifyListeners());
+      // Passage automatique au morceau suivant à la fin.
+      player.processingStateStream.listen((s) {
+        if (s == ProcessingState.completed) {
+          clock.sync(playing: false);
+          notifyListeners();
+        }
+      });
+    }
   }
 
   String get currentName =>
       current >= 0 && current < names.length
-          ? names[current].replaceAll(RegExp(r'\.[^.]+$'), '')
+          ? names[current].replaceAll(RegExp('\.[^.]+$'), '')
           : '';
 
   // ------------------------------------------------------------------
-  // Analyse du morceau courant
+  // Analyse du morceau courant (hors fil d'interface)
   // ------------------------------------------------------------------
   Future<void> _loadFeatures() async {
     if (current < 0 || current >= paths.length) return;
@@ -136,16 +158,19 @@ class AppController extends ChangeNotifier {
     status = 'Analyse du morceau…';
     notifyListeners();
     final path = paths[current];
+    final oldFeatures = features;
     try {
       final wav = await Decoder.toWav(path);
       features = await Decoder.analyze(wav);
-      // Le WAV intermédiaire peut être supprimé.
       try { File(wav).deleteSync(); } catch (_) {}
+      // Libère l'ancien morceau (mémoire : un seul morceau à la fois).
+      oldFeatures?.dispose();
       rs.reset();
       fx.reset();
-      status = 'Prêt : ${names[current]}';
+      status = 'Prêt : $currentName';
     } catch (e) {
       features = null;
+      oldFeatures?.dispose();
       status = 'Fichier illisible ou format non pris en charge';
     }
     analyzing = false;
@@ -154,9 +179,10 @@ class AppController extends ChangeNotifier {
 
   Future<void> selectTrack(int i) async {
     if (i < 0 || i >= paths.length || i == current) return;
-    current = i;
     await player.seek(Duration.zero, index: i);
+    current = i;
     await player.play();
+    clock.sync(playing: true);
     notifyListeners();
     _loadFeatures();
   }
@@ -165,6 +191,7 @@ class AppController extends ChangeNotifier {
   // Lecture
   // ------------------------------------------------------------------
   Future<void> playPause() async {
+    if (paths.isEmpty) return;
     if (player.playing) {
       await player.pause();
       clock.pause();
@@ -175,8 +202,17 @@ class AppController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> next() async { if (paths.isEmpty) return; await player.seekToNext(); }
-  Future<void> prev() async { if (paths.isEmpty) return; await player.seekToPrevious(); }
+  Future<void> next() async {
+    if (paths.isEmpty) return;
+    await player.seekToNext();
+    clock.sync(playing: player.playing);
+  }
+
+  Future<void> prev() async {
+    if (paths.isEmpty) return;
+    await player.seekToPrevious();
+    clock.sync(playing: player.playing);
+  }
 
   Future<void> seek(double seconds) async {
     await player.seek(Duration(milliseconds: (seconds * 1000).round()));
@@ -190,12 +226,12 @@ class AppController extends ChangeNotifier {
   double get duration => player.duration?.inMilliseconds.toDouble() ?? 0;
 
   // ------------------------------------------------------------------
-  // Boucle d'animation (appelée par le Ticker de l'UI, 60 ips cible)
+  // Boucle d'animation (Ticker de l'UI, 60 ips cible)
   // ------------------------------------------------------------------
   void tick(double dt) {
     final f = features;
     if (f == null) return;
-    clock.sync(playing: player.playing); // resynchronisation douce
+    // Position d'animation = horloge continue − réglage Synchro.
     final double pos = clock.position() - synchro / 1000.0;
     final double t = pos < 0 ? 0 : (pos > f.duration ? f.duration : pos);
     fv.read(f, t);
@@ -205,16 +241,14 @@ class AppController extends ChangeNotifier {
   }
 
   // ------------------------------------------------------------------
-  // Export
+  // Export vidéo
   // ------------------------------------------------------------------
   Future<void> startExport() async {
     final f = features;
     if (f == null || exporting) return;
     final fmt = format;
     double start = clock.position();
-    double dur = extraitSec < 0
-        ? (f.duration - start)
-        : extraitSec.toDouble();
+    double dur = extraitSec < 0 ? (f.duration - start) : extraitSec.toDouble();
     if (start > f.duration - 1) start = 0;
     if (dur > f.duration - start) dur = f.duration - start;
     exporting = true;
@@ -225,7 +259,7 @@ class AppController extends ChangeNotifier {
 
     final exp = VideoExporter();
     exporter = exp;
-    await serviceChannel.startForeground();
+    await ExportServiceChannel.start();
     try {
       final out = await exp.export(ExportParams(
         features: f,
@@ -251,7 +285,7 @@ class AppController extends ChangeNotifier {
       status = _cancelledByUser(msg) ? 'Export annulé' : 'Erreur : $msg';
       exporter = null;
     } finally {
-      await serviceChannel.stopForeground();
+      await ExportServiceChannel.stop();
       exporting = false;
       exportProgress = 0;
       notifyListeners();
@@ -266,8 +300,7 @@ class AppController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ------------------------------------------------------------------
-  Future<void> closeResult() async {
+  void closeResult() {
     exportedPath = null;
     notifyListeners();
   }
@@ -281,12 +314,12 @@ class AppController extends ChangeNotifier {
 }
 
 /// Canal de méthode vers le service de premier plan Android.
-class MethodChannelX {
+class ExportServiceChannel {
   static const _ch = MethodChannel('wave_fluide/export_service');
-  Future<void> startForeground() async {
+  static Future<void> start() async {
     try { await _ch.invokeMethod('startExport'); } catch (_) {}
   }
-  Future<void> stopForeground() async {
+  static Future<void> stop() async {
     try { await _ch.invokeMethod('stopExport'); } catch (_) {}
   }
 }

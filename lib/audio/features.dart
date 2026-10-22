@@ -2,14 +2,13 @@ import 'dart:typed_data';
 import 'fft.dart';
 
 /// Caractéristiques précalculées d'un morceau, à 60 images/seconde.
-/// Stockage compact (Float32List/Int16List) : ~325 octets par image,
-/// soit moins de 5 Mo pour 4 minutes.
+/// Stockage compact : ~325 octets/image, < 5 Mo pour 4 minutes.
 class TrackFeatures {
-  final int frameCount; // nombre d'images à 60 Hz
+  final int frameCount;
   final double duration;
-  final Float32List bands; // frameCount × 16 : valeurs v_k (§5, avant gain global)
-  final Float32List env;   // frameCount : RMS de l'enveloppe basse (e)
-  final Int16List wave;    // frameCount × 128 : forme d'onde mono brute
+  final Float32List bands; // frameCount × 16 : valeurs v_k (§5, avant gain)
+  final Float32List env;   // frameCount : RMS enveloppe basse (e)
+  final Int16List wave;    // frameCount × 128 : forme d'onde brute
 
   TrackFeatures({
     required this.frameCount,
@@ -21,7 +20,8 @@ class TrackFeatures {
 
   static const int fps = 60;
 
-  /// Interpole les 16 bandes à l'instant [t] (secondes) dans [out].
+  void dispose() {} // libération immédiate quand la référence tombe
+
   void bandsAt(double t, Float32List out) {
     double f = t * fps;
     if (f < 0) f = 0;
@@ -36,7 +36,6 @@ class TrackFeatures {
     }
   }
 
-  /// Enveloppe RMS de basse interpolée à l'instant [t].
   double envAt(double t) {
     double f = t * fps;
     if (f < 0) f = 0;
@@ -46,7 +45,6 @@ class TrackFeatures {
     return env[i0] + (env[i1] - env[i0]) * (f - i0);
   }
 
-  /// 128 échantillons de forme d'onde autour de [t], copiés dans [out].
   void waveAt(double t, Float32List out) {
     int f = (t * fps).toInt();
     if (f < 0) f = 0;
@@ -57,7 +55,7 @@ class TrackFeatures {
   }
 }
 
-/// Vue interpolée d'une image (réutilisable, sans allocation).
+/// Vue interpolée d'une image (réutilisable, sans allocation par frame).
 class FrameView {
   final Float32List bands = Float32List(16);
   final Float32List wave = Float32List(128);
