@@ -63,8 +63,8 @@ class VideoExporter {
 
   void cancel() {
     _cancelled = true;
-    final s = _session;
-    if (s != null) FFmpegKit.cancel(s.getSessionId());
+    // Annule toutes les sessions FFmpeg en cours.
+    FFmpegKit.cancel();
   }
 
   Future<String> export(ExportParams params) async {
@@ -88,7 +88,7 @@ class VideoExporter {
         lastError = e;
       }
     }
-    throw Exception('Export impossible : $lastError');
+    throw Exception('Export impossible : ' + lastError.toString());
   }
 
   Future<String> _tryExport(ExportParams params, _Attempt a) async {
@@ -114,7 +114,7 @@ class VideoExporter {
     // Préchauffe de 3 s : gain automatique stable dès la première image.
     const double warmup = 3.0;
     for (double t = -warmup; t < 0 && !_cancelled; t += dt) {
-      fv.read(feat, math.max(0, params.start + t));
+      fv.read(feat, math.max(0.0, params.start + t));
       rs.step(dt, fv, paused: false);
       fx.step(dt, rs, unit: unit, height: a.h.toDouble());
     }
@@ -124,14 +124,6 @@ class VideoExporter {
         '${dir.path}/export_${DateTime.now().millisecondsSinceEpoch}.mp4';
     final bitrate = _bitrate(a.w, a.h, fps);
 
-    // Essai du tube nommé FFmpeg (méthode recommandée) puis repli PNG.
-    String? pipe;
-    try {
-      pipe = FFmpegKitConfig.registerNewFFmpegPipe();
-    } catch (_) {
-      pipe = null;
-    }
-
     // Rendu d'une image (même fonction draw que l'affichage).
     Future<ui.Image> renderFrame() async {
       final rec = ui.PictureRecorder();
@@ -140,39 +132,45 @@ class VideoExporter {
       return rec.endRecording().toImage(a.w, a.h);
     }
 
+    // ----- Méthode recommandée : tube nommé FFmpeg, puis repli PNG -----
+    String? pipe;
+    try {
+      // Asynchrone dans ffmpeg_kit_flutter_new.
+      pipe = await FFmpegKitConfig.registerNewFFmpegPipe();
+    } catch (_) {
+      pipe = null;
+    }
+
     if (pipe != null) {
       final encoders = ['h264_mediacodec', 'libx264'];
-      Object? err;
       for (final enc in encoders) {
         if (_cancelled) throw Exception('Export annulé');
+        final String pipePath = pipe; // copie locale non nulle
         final vcodec = enc == 'libx264'
             ? '-c:v libx264 -profile:v high'
             : '-c:v h264_mediacodec';
-        final cmd = '-y -f rawvideo -pix_fmt rgba -s ${a.w}x${a.h} -r $fps '
-            '-i "$pipe" '
-            '-ss ${params.start.toStringAsFixed(3)} '
-            '-i "${params.audioPath}" '
-            '-map 0:v -map 1:a -t ${params.duration.toStringAsFixed(3)} '
-            '$vcodec -b:v $bitrate -pix_fmt yuv420p '
-            '-movflags +faststart -g ${fps * 2} '
-            '-c:a aac -b:a 128k "$outPath"';
+        final cmd = '-y -f rawvideo -pix_fmt rgba -s ${a.w}x${a.h} -r ' + fps.toString() + ' '
+            '-i "' + pipePath + '" '
+            '-ss ' + params.start.toStringAsFixed(3) + ' '
+            '-i "' + params.audioPath + '" '
+            '-map 0:v -map 1:a -t ' + params.duration.toStringAsFixed(3) + ' '
+            + vcodec + ' -b:v ' + bitrate + ' -pix_fmt yuv420p '
+            '-movflags +faststart -g ' + (fps * 2).toString() + ' '
+            '-c:a aac -b:a 128k "' + outPath + '"';
         final completer = Completer<Object?>();
-        FFmpegSession session;
-        var started = false;
-        session = (await FFmpegKit.executeAsync(cmd, (s) {
-          if (!completer.isCompleted) {
-            final rc = s.getReturnCode();
-            if (ReturnCode.isSuccess(rc)) {
-              completer.complete(rc);
-            } else {
-              completer.completeError(Exception(
-                  'Échec de l\'encodage (${enc}) : ${s.getFailStackTrace() ?? s.getOutputAsString() ?? ""}'));
-            }
+        // Les accesseurs de session sont asynchrones dans ce fork.
+        final session = await FFmpegKit.executeAsync(cmd, (sess) async {
+          if (completer.isCompleted) return;
+          final rc = await sess.getReturnCode();
+          if (ReturnCode.isSuccess(rc)) {
+            completer.complete(rc);
+          } else {
+            completer.completeError(Exception(
+                "Échec de l'encodage (" + enc + '), code ' + (rc?.getValue().toString() ?? '?')));
           }
-        }));
-        started = true;
+        });
         _session = session;
-        final raf = File(pipe).openSync(mode: FileMode.write);
+        final raf = File(pipePath).openSync(mode: FileMode.write);
         try {
           for (int i = 0; i < nFrames; i++) {
             if (_cancelled) {
@@ -184,14 +182,14 @@ class VideoExporter {
             fx.step(dt, rs, unit: unit, height: a.h.toDouble());
             final img = await renderFrame();
             final data = await img.toByteData(format: ui.ImageByteFormat.rawRgba);
-            if (data == null) throw Exception('Rendu d\'image impossible');
+            if (data == null) throw Exception("Rendu d'image impossible");
             raf.writeFromSync(data.buffer.asUint8List());
             img.dispose();
             if (i % 4 == 0) {
               // Cède régulièrement la main à l'interface.
               await Future.delayed(Duration.zero);
               params.onProgress?.call(i / nFrames,
-                  'Export ${(i / nFrames * 100).toInt()} % (${a.w}x${a.h})');
+                  'Export ' + (i / nFrames * 100).toInt().toString() + ' % (' + a.w.toString() + 'x' + a.h.toString() + ')');
             }
           }
           await raf.flush();
@@ -199,30 +197,33 @@ class VideoExporter {
           // Attend la fin de l'encodage FFmpeg.
           final res = await completer.future;
           if (res is Exception) throw res;
-          FFmpegKitConfig.closeFFmpegPipe(pipe);
+          FFmpegKitConfig.closeFFmpegPipe(pipePath);
           return outPath;
         } catch (e) {
           try { raf.closeSync(); } catch (_) {}
-          FFmpegKitConfig.closeFFmpegPipe(pipe);
-          pipe = FFmpegKitConfig.registerNewFFmpegPipe();
+          FFmpegKitConfig.closeFFmpegPipe(pipePath);
+          // Recrée un tube pour l'encodeur de repli suivant.
+          try {
+            pipe = await FFmpegKitConfig.registerNewFFmpegPipe();
+          } catch (_) {
+            pipe = null;
+          }
           if (_cancelled) rethrow;
-          // Si l'encodeur a échoué, on tente le suivant.
-          final _ = started;
           try {
             await completer.future;
           } catch (_) {}
-          err = e;
           continue;
         }
       }
       // Tous les encodeurs ont échoué avec le tube : repli PNG.
       if (pipe != null) {
         try { FFmpegKitConfig.closeFFmpegPipe(pipe); } catch (_) {}
+        pipe = null;
       }
     }
 
     // ----- Repli : séquence PNG dans le cache -----
-    final framesDir = Directory('${dir.path}/frames');
+    final framesDir = Directory(dir.path + '/frames');
     if (framesDir.existsSync()) framesDir.deleteSync(recursive: true);
     framesDir.createSync(recursive: true);
     for (int i = 0; i < nFrames; i++) {
@@ -233,26 +234,27 @@ class VideoExporter {
       fx.step(dt, rs, unit: unit, height: a.h.toDouble());
       final img = await renderFrame();
       final data = await img.toByteData(format: ui.ImageByteFormat.png);
-      File('${framesDir.path}/frame_${i.toString().padLeft(5, '0')}.png')
+      File(framesDir.path + '/frame_' + i.toString().padLeft(5, '0') + '.png')
           .writeAsBytesSync(data!.buffer.asUint8List());
       img.dispose();
       if (i % 4 == 0) {
         await Future.delayed(Duration.zero);
         params.onProgress?.call(i / nFrames,
-            'Export ${(i / nFrames * 100).toInt()} % (${a.w}x${a.h})');
+            'Export ' + (i / nFrames * 100).toInt().toString() + ' % (' + a.w.toString() + 'x' + a.h.toString() + ')');
       }
     }
-    final cmd2 = '-y -framerate $fps '
-        '-i ${framesDir.path}/frame_%05d.png '
-        '-ss ${params.start.toStringAsFixed(3)} '
-        '-i "${params.audioPath}" '
-        '-map 0:v -map 1:a -t ${params.duration.toStringAsFixed(3)} '
-        '-c:v libx264 -profile:v high -b:v $bitrate -pix_fmt yuv420p '
-        '-movflags +faststart -g ${fps * 2} '
-        '-c:a aac -b:a 128k "$outPath"';
+    final cmd2 = '-y -framerate ' + fps.toString() + ' '
+        '-i ' + framesDir.path + '/frame_%05d.png '
+        '-ss ' + params.start.toStringAsFixed(3) + ' '
+        '-i "' + params.audioPath + '" '
+        '-map 0:v -map 1:a -t ' + params.duration.toStringAsFixed(3) + ' '
+        '-c:v libx264 -profile:v high -b:v ' + bitrate + ' -pix_fmt yuv420p '
+        '-movflags +faststart -g ' + (fps * 2).toString() + ' '
+        '-c:a aac -b:a 128k "' + outPath + '"';
     final session = await FFmpegKit.execute(cmd2);
-    if (!ReturnCode.isSuccess(session.getReturnCode())) {
-      throw Exception('Export impossible : ${session.getOutputAsString() ?? "échec FFmpeg"}');
+    final code = await session.getReturnCode();
+    if (!ReturnCode.isSuccess(code)) {
+      throw Exception('Export impossible (code ' + (code?.getValue().toString() ?? '?') + ')');
     }
     framesDir.deleteSync(recursive: true);
     return outPath;
@@ -262,7 +264,7 @@ class VideoExporter {
   static String _bitrate(int w, int h, int fps) {
     final double bits = w * h * fps * 0.14;
     final double mbps = math.min(12, math.max(3, bits / 1000000.0));
-    return '${mbps.toStringAsFixed(1)}M';
+    return mbps.toStringAsFixed(1) + 'M';
   }
 }
 
