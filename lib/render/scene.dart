@@ -1,9 +1,11 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
-import 'palettes.dart';
 import 'organic.dart';
+import 'palettes.dart';
 import 'render_state.dart';
+
+export 'palettes.dart';
 
 enum VizStyle { neon, capsules, organique, bleu, fluide }
 
@@ -44,7 +46,7 @@ class Scene {
         final lum = paletteLuminance(palette);
         paint.color = lum > 0.33 ? kInkDark : kWhite;
       } else {
-        paint.color = kWhite; // Néon/Fluide gèrent la palette par style
+        paint.color = kWhite;
       }
     } else {
       if (oled) {
@@ -65,11 +67,9 @@ class Scene {
 void paintBackground(Scene s, Canvas canvas, Size size) {
   final rect = Rect.fromLTWH(0, 0, size.width, size.height);
   if (s.oled || !s.lightStyle) {
-    // Fond noir pour OLED et toujours pour Néon / Fluide.
     canvas.drawRect(rect, Paint()..color = const Color(0xFF000000));
     return;
   }
-  // Styles clairs avec palette : dégradé vertical de la palette.
   if (s.hasPalette) {
     canvas.drawRect(
       rect,
@@ -82,7 +82,6 @@ void paintBackground(Scene s, Canvas canvas, Size size) {
     );
     return;
   }
-  // Styles clairs sans palette.
   late Color c;
   switch (s.style) {
     case VizStyle.capsules:
@@ -101,14 +100,14 @@ void paintBackground(Scene s, Canvas canvas, Size size) {
 }
 
 /// Dessine la scène complète. Sert à l'affichage ET à l'export vidéo.
-/// Aucun texte ni barre de progression n'est dessiné ici.
+/// Aucun titre de morceau, aucun texte ni barre de progression ne sont dessinés.
 void drawScene(Scene s, Canvas canvas, Size size, OrganicFX organic) {
   paintBackground(s, canvas, size);
-  final rs = s.rs;
-  final double W = size.width, H = size.height;
+  final double H = size.height;
 
-  // Espace paroles : composition réduite, bord gauche et centre vertical fixes.
+  // Espace paroles : bord gauche et centre vertical comme point fixe.
   if (s.p > 0) {
+    canvas.save();
     final double k = 1 - s.p;
     canvas.translate(0, H / 2);
     canvas.scale(k, k);
@@ -132,11 +131,8 @@ void drawScene(Scene s, Canvas canvas, Size size, OrganicFX organic) {
       drawFluide(s, canvas, size);
       break;
   }
-  // Restaure la transformation Espace paroles.
-  if (s.p > 0) {
-    canvas.restore();
-    canvas.save();
-  }
+
+  if (s.p > 0) canvas.restore();
 }
 
 // ------------------------- 8.1 Néon -------------------------
@@ -145,18 +141,18 @@ void drawNeon(Scene s, Canvas canvas, Size size) {
   final double W = size.width, H = size.height, m = math.min(W, H);
   final double cy = H / 2, t = rs.t;
 
-  // Deux courbes, 171 points chacune. Réutilise les listes.
   final ys1 = List<double>.filled(171, 0);
   final ys2 = List<double>.filled(171, 0);
   for (int j = 0; j <= 170; j++) {
     final double u = j / 170 * 2 - 1;
     final double env = math.exp(-3.4 * u * u);
-    final double w = rs.wave[(j * 127 / 170).toInt().clamp(0, 127)];
+    final double w = rs.wave[((j * 127 / 170) as num).toInt().clamp(0, 127)];
     final double sv = (w + 0.06 * math.sin(j * 0.25 + t * 2)) * 2.2;
     final double base =
         cy - H * 0.3 * math.min(1.2, rs.loud * 2.2 + 0.05) * env * sv;
     ys1[j] = base - m * 0.42 * rs.bass * math.exp(-160 * u * u);
-    ys2[j] = base * 0.9 + cy * 0.1 + m * 0.3 * rs.bass * math.exp(-220 * (u - 0.07) * (u - 0.07));
+    final double u2 = u - 0.07;
+    ys2[j] = base * 0.9 + cy * 0.1 + m * 0.3 * rs.bass * math.exp(-220 * u2 * u2);
   }
 
   final path = Path();
@@ -172,11 +168,10 @@ void drawNeon(Scene s, Canvas canvas, Size size) {
     }
   }
 
-  // Couleurs selon palette (§8.1) ou valeurs par défaut.
-  List<double> widths = [0.05, 0.026, 0.012, 0.012, 0.012, 0.004];
-  List<double> offsets = [0, 0, 0, 0.006, -0.006, 0];
+  final widths = [0.05, 0.026, 0.012, 0.012, 0.012, 0.004];
+  final offsets = [0.0, 0.0, 0.0, 0.006, -0.006, 0.0];
+  final alphas = [0.10, 0.22, 0.55, 0.22, 0.22, 0.95];
   List<Color> colors;
-  List<double> alphas = [0.10, 0.22, 0.55, 0.22, 0.22, 0.95];
   if (s.hasPalette) {
     final c0 = lighten(s.palette.colors[0]);
     final c1 = lighten(s.palette.colors[1]);
@@ -217,33 +212,32 @@ void drawCapsules(Scene s, Canvas canvas, Size size) {
   final double y0 = cy - m * 0.3;
   final double x0 = W / 2 - (5 * step + pw) / 2;
 
-  Paint? ink;
-  if (s.hasPalette || s.oled) ink = s.inkPaint(Rect.fromLTWH(0, 0, W, H));
+  final Paint? ink = (s.hasPalette || s.oled)
+      ? s.inkPaint(Rect.fromLTWH(0, 0, W, H))
+      : null;
 
   for (int i = 0; i < 6; i++) {
     final double h = pw * 1.2 + math.min(1.05, rs.sm[map[i]]) * m * 0.55;
     final rect = RRect.fromRectAndRadius(
         Rect.fromLTWH(x0 + i * step, y0, pw, h), Radius.circular(pw / 2));
     if (ink != null) {
-      // Encre unie (palette ou OLED).
       canvas.drawRRect(rect, ink);
     } else if (i.isEven) {
-      // Dégradé vertical : blanc plein 38 %, blanc 42 % α à 78 %, presque transparent.
-      final g = rect.rect;
+      // Blanc plein jusqu'à 38 %, blanc 42 % α à 78 %, presque transparent ensuite.
       canvas.drawRRect(
         rect,
         Paint()
           ..shader = LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: [0, 0.38, 0.78, 1],
+            stops: const [0, 0.38, 0.78, 1],
             colors: [
               kWhite,
               kWhite,
               kWhite.withValues(alpha: 0.42),
               kWhite.withValues(alpha: 0.08),
             ],
-          ).createShader(g),
+          ).createShader(rect.rect),
       );
     } else {
       // Impairs : l'inverse (transparent en haut, plein à partir de 62 %).
@@ -253,7 +247,7 @@ void drawCapsules(Scene s, Canvas canvas, Size size) {
           ..shader = LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: [0, 0.62, 1],
+            stops: const [0, 0.62, 1],
             colors: [
               kWhite.withValues(alpha: 0.08),
               kWhite.withValues(alpha: 0.42),
@@ -311,11 +305,11 @@ void drawFluide(Scene s, Canvas canvas, Size size) {
 
   // 15 barres blanches symétriques + halo vert translucide derrière.
   final halo = Paint()..color = const Color(0xFF2BE3A0).withValues(alpha: 0.13);
-  final white = (s.oled && s.hasPalette)
+  final Paint white = (s.oled && s.hasPalette)
       ? s.inkPaint(Rect.fromLTWH(0, 0, W, H))
       : (Paint()..color = kWhite);
   for (int i = -7; i <= 7; i++) {
-    final double h = bw + math.min(1.05, rs.sm[i.abs() * 2]) * (0.6 * H - bw);
+    final double h = bw + math.min(1.05, rs.sm[(i.abs() * 2).clamp(0, 15)]) * (0.6 * H - bw);
     final double x = W / 2 + i * step - bw / 2;
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -331,40 +325,42 @@ void drawFluide(Scene s, Canvas canvas, Size size) {
     );
   }
 
-  // 3 rubans lissés, splines Catmull-Rom -> Bézier, additifs.
+  // 3 rubans lissés, Catmull-Rom -> Bézier, fusion additive.
   final scales = [1.0, 0.74, 0.5];
   final phases = [0.0, 1.7, 3.1];
   final opac = [0.38, 0.26, 0.18];
-  final ribbon = Paint()
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = bw * 0.16
-    ..strokeCap = StrokeCap.round
-    ..blendMode = BlendMode.plus
-    ..shader = LinearGradient(
+  for (int r = 0; r < 3; r++) {
+    final path = Path();
+    final double sc = scales[r], ph = phases[r];
+    final shader = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [top, mid, bottom],
     ).createShader(Rect.fromLTWH(0, cy - H * 0.35, W, H * 0.7));
+    final ribbon = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = bw * 0.16
+      ..strokeCap = StrokeCap.round
+      ..blendMode = BlendMode.plus
+      ..shader = shader;
 
-  for (int r = 0; r < 3; r++) {
-    final path = Path()..reset();
-    final double sc = scales[r], ph = phases[r];
     double px = 0, py = 0;
     for (int i = -7; i <= 7; i++) {
       final double wob = 1 + 0.07 * math.sin(rs.t * 2.1 + i * 0.8 + ph);
-      final double h = bw + math.min(1.05, rs.sm[i.abs() * 2]) * (0.6 * H - bw);
+      final double h = bw + math.min(1.05, rs.sm[(i.abs() * 2).clamp(0, 15)]) * (0.6 * H - bw);
       final double x = W / 2 + i * step * sc;
       final double y = cy - (h / 2) * wob * sc;
       if (i == -7) {
         path.moveTo(x, y);
       } else {
-        // Catmull-Rom -> Bézier : points de contrôle au milieu.
-        final double cx1 = (px + x) / 2;
-        path.quadraticBezierTo(cx1, py, x, y);
+        path.quadraticBezierTo((px + x) / 2, py, x, y);
       }
       px = x; py = y;
     }
-    ribbon.color = kWhite.withValues(alpha: 1); // shader domine
-    canvas.drawPath(path, ribbon..color = kWhite.withValues(alpha: opac[r]));
+    // L'opacité propre à chaque ruban.
+    canvas.saveLayer(Rect.fromLTWH(0, 0, size.width, size.height),
+        Paint()..color = kWhite.withValues(alpha: opac[r]));
+    canvas.drawPath(path, ribbon);
+    canvas.restore();
   }
 }
