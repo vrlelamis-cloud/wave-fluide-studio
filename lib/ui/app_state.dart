@@ -55,6 +55,9 @@ class AppController extends ChangeNotifier {
   double _screenW = 1080, _screenH = 1920;
   void setScreenSize(double w, double h) { _screenW = w; _screenH = h; }
 
+  /// Mise à jour publique de l'interface.
+  void update() => notifyListeners();
+
   ExportFormat get format {
     switch (formatIndex) {
       case 0: return ExportFormat.f9x16;
@@ -80,7 +83,7 @@ class AppController extends ChangeNotifier {
       );
     } catch (_) {
       status = 'Sélecteur de fichiers indisponible';
-      notifyListeners();
+      update();
       return;
     }
     if (res == null || res.files.isEmpty) return;
@@ -96,17 +99,16 @@ class AppController extends ChangeNotifier {
     }
     if (added == 0) {
       status = 'Aucun fichier importé';
-      notifyListeners();
+      update();
       return;
     }
-    status = '$added morceau(s) importé(s)';
-    await _rebuildPlaylist(
-        startIndex: current < 0 ? firstAdded : current);
+    status = '$added morceau(x) importé(s)';
+    await _rebuildPlaylist(startIndex: current < 0 ? firstAdded : current);
     if (current < 0) {
       current = firstAdded;
       await _loadFeatures();
     }
-    notifyListeners();
+    update();
   }
 
   bool _playlistBound = false;
@@ -130,15 +132,14 @@ class AppController extends ChangeNotifier {
         if (i != null && i != current) {
           current = i;
           _loadFeatures();
-          notifyListeners();
+          update();
         }
       });
-      player.playerStateStream.listen((_) => notifyListeners());
-      // Passage automatique au morceau suivant à la fin.
+      player.playerStateStream.listen((_) => update());
       player.processingStateStream.listen((s) {
         if (s == ProcessingState.completed) {
           clock.sync(playing: false);
-          notifyListeners();
+          update();
         }
       });
     }
@@ -150,20 +151,19 @@ class AppController extends ChangeNotifier {
           : '';
 
   // ------------------------------------------------------------------
-  // Analyse du morceau courant (hors fil d'interface)
+  // Analyse du morceau courant (Isolate, hors fil d'interface)
   // ------------------------------------------------------------------
   Future<void> _loadFeatures() async {
     if (current < 0 || current >= paths.length) return;
     analyzing = true;
     status = 'Analyse du morceau…';
-    notifyListeners();
+    update();
     final path = paths[current];
     final oldFeatures = features;
     try {
       final wav = await Decoder.toWav(path);
       features = await Decoder.analyze(wav);
       try { File(wav).deleteSync(); } catch (_) {}
-      // Libère l'ancien morceau (mémoire : un seul morceau à la fois).
       oldFeatures?.dispose();
       rs.reset();
       fx.reset();
@@ -174,7 +174,7 @@ class AppController extends ChangeNotifier {
       status = 'Fichier illisible ou format non pris en charge';
     }
     analyzing = false;
-    notifyListeners();
+    update();
   }
 
   Future<void> selectTrack(int i) async {
@@ -183,7 +183,7 @@ class AppController extends ChangeNotifier {
     current = i;
     await player.play();
     clock.sync(playing: true);
-    notifyListeners();
+    update();
     _loadFeatures();
   }
 
@@ -199,7 +199,7 @@ class AppController extends ChangeNotifier {
       await player.play();
       clock.resume();
     }
-    notifyListeners();
+    update();
   }
 
   Future<void> next() async {
@@ -219,7 +219,7 @@ class AppController extends ChangeNotifier {
     clock.sync(playing: player.playing);
     rs.reset();
     fx.reset();
-    notifyListeners();
+    update();
   }
 
   double get position => player.position.inMilliseconds / 1000.0;
@@ -255,7 +255,7 @@ class AppController extends ChangeNotifier {
     exportProgress = 0;
     exportLabel = 'Export 0 % (${fmt.width}x${fmt.height})';
     exportedPath = null;
-    notifyListeners();
+    update();
 
     final exp = VideoExporter();
     exporter = exp;
@@ -275,7 +275,7 @@ class AppController extends ChangeNotifier {
         onProgress: (p, label) {
           exportProgress = p;
           exportLabel = label;
-          notifyListeners();
+          update();
         },
       ));
       exportedPath = out;
@@ -288,7 +288,7 @@ class AppController extends ChangeNotifier {
       await ExportServiceChannel.stop();
       exporting = false;
       exportProgress = 0;
-      notifyListeners();
+      update();
     }
   }
 
@@ -297,12 +297,12 @@ class AppController extends ChangeNotifier {
   void cancelExport() {
     exporter?.cancel();
     status = 'Annulation de l\'export…';
-    notifyListeners();
+    update();
   }
 
   void closeResult() {
     exportedPath = null;
-    notifyListeners();
+    update();
   }
 
   @override

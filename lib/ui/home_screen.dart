@@ -1,15 +1,13 @@
-import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:gal/gal.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
-import 'package:gal/gal.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-import '../render/organic.dart';
 import '../render/palettes.dart';
 import '../render/scene.dart';
 import 'app_state.dart';
@@ -33,14 +31,15 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _ticker = createTicker(_onTick)..start();
-    WakelockPlus.enable();
+    WakelockPlus.enable(); // écran allumé pendant lecture et export
   }
 
   void _onTick(Duration elapsed) {
-    final dt = _last == Duration.zero ? 1 / 60 : (elapsed - _last).inMicroseconds / 1e6;
+    final dt = _last == Duration.zero
+        ? 1 / 60
+        : (elapsed - _last).inMicroseconds / 1e6;
     _last = elapsed;
     controller.tick(dt.clamp(0.001, 0.1));
-    // Mesure de fluidité : réduction auto de la résolution interne.
     if (dt > 0) _fpsWindow.add(dt);
     if (_fpsWindow.length > 120) {
       _fpsWindow.removeAt(0);
@@ -62,8 +61,6 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     controller.setScreenSize(media.size.width, media.size.height);
-    final bool reduceAnim = media.disableAnimations;
-
     return AnimatedBuilder(
       animation: controller,
       builder: (context, _) {
@@ -73,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen>
             child: Column(
               children: [
                 _buildHeader(),
-                Expanded(child: _buildAnimationArea(context)),
+                Expanded(child: _buildAnimationArea()),
                 _buildPanel(context, media),
               ],
             ),
@@ -124,26 +121,24 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   // ------------------------- Zone d'animation -------------------------
-  Widget _buildAnimationArea(BuildContext context) {
-    final fmt = controller.format;
+  Widget _buildAnimationArea() {
     return RepaintBoundary(
-      child: LayoutBuilder(builder: (context, constraints) {
-        return CustomPaint(
-          size: Size.infinite,
-          painter: _ScenePainter(
-            controller: controller,
-            longSide: _previewLongSide,
-            aspect: fmt.width / fmt.height,
-          ),
-        );
-      }),
+      child: CustomPaint(
+        size: Size.infinite,
+        painter: _ScenePainter(
+          controller: controller,
+          longSide: _previewLongSide,
+          aspect: controller.format.width / controller.format.height,
+          repaint: controller.repaint,
+        ),
+      ),
     );
   }
 
   // ------------------------- Panneau du bas -------------------------
   Widget _buildPanel(BuildContext context, MediaQueryData media) {
     final disabled = controller.exporting;
-    final panel = Container(
+    return Container(
       decoration: const BoxDecoration(
         color: Color(0xFF000000),
         border: Border(top: BorderSide(color: Color(0xFF1C1F26), width: 1)),
@@ -153,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       child: SingleChildScrollView(
         child: Opacity(
-          opacity: disabled ? 0.35 : 1,
+          opacity: disabled ? 0.35 : 1, // tous les contrôles à 35 % pendant l'export
           child: IgnorePointer(
             ignoring: disabled,
             child: Column(
@@ -166,21 +161,30 @@ class _HomeScreenState extends State<HomeScreen>
                   value: controller.espaceParoles.toDouble(),
                   min: 0, max: 60, divisions: 12,
                   display: '${controller.espaceParoles} %',
-                  onChanged: (v) => setState2(() => controller.espaceParoles = v.round()),
+                  onChanged: (v) {
+                    controller.espaceParoles = v.round();
+                    controller.update();
+                  },
                 ),
                 _buildSlider(
                   label: 'Décalage vidéo',
                   value: controller.decalageVideo.toDouble(),
                   min: -120, max: 120, divisions: 48,
                   display: '${controller.decalageVideo} ms',
-                  onChanged: (v) => setState2(() => controller.decalageVideo = v.round()),
+                  onChanged: (v) {
+                    controller.decalageVideo = v.round();
+                    controller.update();
+                  },
                 ),
                 _buildSlider(
                   label: 'Synchro',
                   value: controller.synchro.toDouble(),
                   min: -50, max: 400, divisions: 45,
                   display: '${controller.synchro} ms',
-                  onChanged: (v) => setState2(() => controller.synchro = v.round()),
+                  onChanged: (v) {
+                    controller.synchro = v.round();
+                    controller.update();
+                  },
                 ),
                 _buildColors(),
                 _buildStyles(),
@@ -205,12 +209,6 @@ class _HomeScreenState extends State<HomeScreen>
         ),
       ),
     );
-    return panel;
-  }
-
-  void setState2(void Function() f) {
-    f();
-    controller.notifyListeners(); // (notifyListeners est public via changeNotifier)
   }
 
   // Barre de position + temps écoulé / durée.
@@ -221,11 +219,10 @@ class _HomeScreenState extends State<HomeScreen>
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Column(children: [
         SliderTheme(
-          data: SliderThemeData(
-            activeTrackColor: const Color(0xFF2BE3A0),
-            thumbColor: const Color(0xFF2BE3A0),
-            inactiveTrackColor: const Color(0xFF1C1F26),
-            overlayColor: const Color(0x332BE3A0),
+          data: const SliderThemeData(
+            activeTrackColor: Color(0xFF2BE3A0),
+            thumbColor: Color(0xFF2BE3A0),
+            inactiveTrackColor: Color(0xFF1C1F26),
           ),
           child: Slider(
             value: dur <= 0 ? 0 : pos,
@@ -234,8 +231,10 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(_fmtTime(pos), style: const TextStyle(fontSize: 11, color: Color(0xFF9AA3AF))),
-          Text(_fmtTime(dur), style: const TextStyle(fontSize: 11, color: Color(0xFF9AA3AF))),
+          Text(_fmtTime(pos),
+              style: const TextStyle(fontSize: 11, color: Color(0xFF9AA3AF))),
+          Text(_fmtTime(dur),
+              style: const TextStyle(fontSize: 11, color: Color(0xFF9AA3AF))),
         ]),
       ]),
     );
@@ -249,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget _buildControls() {
     final playing = controller.player.playing;
-    final accent = const Color(0xFF2BE3A0);
+    const accent = Color(0xFF2BE3A0);
     Widget circle(IconData icon, String label, VoidCallback onTap,
         {double size = 48, Color? bg, Color? fg}) {
       return Semantics(
@@ -303,7 +302,8 @@ class _HomeScreenState extends State<HomeScreen>
         itemCount: controller.names.length,
         itemBuilder: (context, i) {
           final active = i == controller.current;
-          final name = controller.names[i].replaceAll(RegExp('\.[^.]+$'), '');
+          final name =
+              controller.names[i].replaceAll(RegExp('\.[^.]+$'), '');
           return ListTile(
             dense: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -314,7 +314,8 @@ class _HomeScreenState extends State<HomeScreen>
               style: TextStyle(
                 fontSize: 13,
                 fontFamily: 'Poppins',
-                color: active ? const Color(0xFF2BE3A0) : const Color(0xFFC7CBD1),
+                color:
+                    active ? const Color(0xFF2BE3A0) : const Color(0xFFC7CBD1),
               ),
             ),
             onTap: () => controller.selectTrack(i),
@@ -331,9 +332,13 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildSlider({
-    required String label, required double value,
-    required double min, required double max, required int divisions,
-    required String display, required ValueChanged<double> onChanged,
+    required String label,
+    required double value,
+    required double min,
+    required double max,
+    required int divisions,
+    required String display,
+    required ValueChanged<double> onChanged,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
@@ -353,7 +358,9 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           child: Slider(
             value: value.clamp(min, max),
-            min: min, max: max, divisions: divisions,
+            min: min,
+            max: max,
+            divisions: divisions,
             label: display,
             onChanged: onChanged,
           ),
@@ -377,10 +384,9 @@ class _HomeScreenState extends State<HomeScreen>
         const SizedBox(height: 6),
         SizedBox(
           height: 44,
-          child: Row(
-            children: [
-              for (int i = 0; i < kPalettes.length; i++) _swatch(i),
-            ],
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [for (int i = 0; i < kPalettes.length; i++) _swatch(i)],
           ),
         ),
       ]),
@@ -395,18 +401,24 @@ class _HomeScreenState extends State<HomeScreen>
       button: true,
       selected: selected,
       child: GestureDetector(
-        onTap: () => setState2(() => controller.paletteIndex = i),
+        onTap: () {
+          controller.paletteIndex = i;
+          controller.update();
+        },
         child: Container(
-          width: 44, height: 44,
+          width: 44,
+          height: 44,
           margin: const EdgeInsets.only(right: 8),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: p.colors.isEmpty
                 ? const LinearGradient(
-                    begin: Alignment.topRight, end: Alignment.bottomLeft,
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
                     colors: [Color(0xFFC6FF5A), Color(0xFF12B7D4)])
                 : LinearGradient(
-                    begin: Alignment.topRight, end: Alignment.bottomLeft,
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
                     colors: p.colors),
             border: Border.all(
               color: selected ? Colors.white : Colors.transparent,
@@ -424,7 +436,8 @@ class _HomeScreenState extends State<HomeScreen>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       child: Wrap(
-        spacing: 8, runSpacing: 8,
+        spacing: 8,
+        runSpacing: 8,
         children: [
           for (int i = 0; i < names.length; i++)
             ChoiceChip(
@@ -435,10 +448,13 @@ class _HomeScreenState extends State<HomeScreen>
               backgroundColor: const Color(0xFF15181E),
               labelStyle: TextStyle(
                 color: controller.style == values[i]
-                    ? Colors.black : Colors.white,
+                    ? Colors.black
+                    : Colors.white,
               ),
-              onSelected: (_) =>
-                  setState2(() => controller.style = values[i]),
+              onSelected: (_) {
+                controller.style = values[i];
+                controller.update();
+              },
             ),
           FilterChip(
             label: const Text('Fond noir OLED',
@@ -446,8 +462,12 @@ class _HomeScreenState extends State<HomeScreen>
             selected: controller.oled,
             selectedColor: Colors.white,
             backgroundColor: const Color(0xFF15181E),
-            labelStyle: TextStyle(color: controller.oled ? Colors.black : Colors.white),
-            onSelected: (v) => setState2(() => controller.oled = v),
+            labelStyle: TextStyle(
+                color: controller.oled ? Colors.black : Colors.white),
+            onSelected: (v) {
+              controller.oled = v;
+              controller.update();
+            },
           ),
         ],
       ),
@@ -469,8 +489,12 @@ class _HomeScreenState extends State<HomeScreen>
               selectedColor: const Color(0xFF2BE3A0),
               backgroundColor: const Color(0xFF15181E),
               labelStyle: TextStyle(
-                color: controller.formatIndex == i ? Colors.black : Colors.white),
-              onSelected: (_) => setState2(() => controller.formatIndex = i),
+                  color:
+                      controller.formatIndex == i ? Colors.black : Colors.white),
+              onSelected: (_) {
+                controller.formatIndex = i;
+                controller.update();
+              },
             ),
         ]),
       ]),
@@ -492,8 +516,13 @@ class _HomeScreenState extends State<HomeScreen>
               selectedColor: const Color(0xFF2BE3A0),
               backgroundColor: const Color(0xFF15181E),
               labelStyle: TextStyle(
-                color: controller.extraitSec == e.key ? Colors.black : Colors.white),
-              onSelected: (_) => setState2(() => controller.extraitSec = e.key),
+                  color: controller.extraitSec == e.key
+                      ? Colors.black
+                      : Colors.white),
+              onSelected: (_) {
+                controller.extraitSec = e.key;
+                controller.update();
+              },
             ),
         ]),
       ]),
@@ -506,7 +535,8 @@ class _HomeScreenState extends State<HomeScreen>
         padding: const EdgeInsets.all(16),
         child: Column(children: [
           Text(controller.exportLabel,
-              style: const TextStyle(fontSize: 13, color: Color(0xFFC7CBD1))),
+              style:
+                  const TextStyle(fontSize: 13, color: Color(0xFFC7CBD1))),
           const SizedBox(height: 8),
           SizedBox(
             width: double.infinity,
@@ -524,7 +554,8 @@ class _HomeScreenState extends State<HomeScreen>
       child: SizedBox(
         width: double.infinity,
         child: FilledButton(
-          style: FilledButton.styleFrom(backgroundColor: const Color(0xFF2BE3A0)),
+          style:
+              FilledButton.styleFrom(backgroundColor: const Color(0xFF2BE3A0)),
           onPressed:
               controller.features == null ? null : controller.startExport,
           child: const Text('Exporter la vidéo',
@@ -536,12 +567,13 @@ class _HomeScreenState extends State<HomeScreen>
 
   // Zone résultat : aperçu + Enregistrer + Partager + Fermer.
   Widget _buildResult() {
-    return _ResultZone(path: controller.exportedPath!, controller: controller);
+    return _ResultZone(
+        path: controller.exportedPath!, controller: controller);
   }
 }
 
-/// Peintre de la scène : même fonction draw que l'export, résolution
-/// interne limitée et mise à l'échelle type object-fit: contain.
+/// Peintre de la scène : même fonction draw que l'export, repeint à
+/// chaque image par le ValueNotifier (via repaint:), dans un RepaintBoundary.
 class _ScenePainter extends CustomPainter {
   final AppController controller;
   final double longSide;
@@ -550,7 +582,8 @@ class _ScenePainter extends CustomPainter {
     required this.controller,
     required this.longSide,
     required this.aspect,
-  });
+    required Listenable repaint,
+  }) : super(repaint: repaint);
 
   @override
   bool shouldRepaint(covariant _ScenePainter old) =>
@@ -558,8 +591,9 @@ class _ScenePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Fond noir (OLED).
-    canvas.drawRect(Offset.zero & size, Paint()..color = const Color(0xFF000000));
+    // Fond noir pur (OLED).
+    canvas.drawRect(
+        Offset.zero & size, Paint()..color = const Color(0xFF000000));
     final scene = Scene(
       rs: controller.rs,
       style: controller.style,
@@ -567,7 +601,7 @@ class _ScenePainter extends CustomPainter {
       oled: controller.oled,
       p: controller.espaceParoles / 100.0,
     );
-    // Résolution interne : format choisi, côté long limité.
+    // Résolution interne selon le format, côté long limité (petits écrans).
     double w, h;
     if (aspect >= 1) {
       w = math.min(longSide, size.width * 2);
@@ -576,12 +610,11 @@ class _ScenePainter extends CustomPainter {
       h = math.min(longSide, size.height * 2);
       w = h * aspect;
     }
-    // object-fit: contain
+    // object-fit: contain.
     final double scale = math.min(size.width / w, size.height / h);
-    final fx = OrganicFX(); // état par image : lecture -> état partagé
     canvas.save();
-    canvas.translate((size.width - w * scale) / 2,
-        (size.height - h * scale) / 2);
+    canvas.translate(
+        (size.width - w * scale) / 2, (size.height - h * scale) / 2);
     canvas.scale(scale, scale);
     drawScene(scene, canvas, Size(w, h), controller.fx);
     canvas.restore();
@@ -604,11 +637,12 @@ class _ResultZoneState extends State<_ResultZone> {
   @override
   void initState() {
     super.initState();
-    _vc = VideoPlayerController.file(File(widget.path));
-    _vc!.initialize().then((_) {
+    final vc = VideoPlayerController.file(File(widget.path));
+    _vc = vc;
+    vc.initialize().then((_) {
       if (mounted) setState(() {});
-      _vc!.play();
-      _vc!.setLooping(true);
+      vc.play();
+      vc.setLooping(true);
     });
   }
 
@@ -620,6 +654,7 @@ class _ResultZoneState extends State<_ResultZone> {
 
   Future<void> _save() async {
     try {
+      // Copie dans Movies/WaveFluide via MediaStore.
       await Gal.putVideo(widget.path, album: 'WaveFluide');
       setState(() => _msg = 'Enregistré dans Movies/WaveFluide');
     } catch (e) {
@@ -645,13 +680,11 @@ class _ResultZoneState extends State<_ResultZone> {
       padding: const EdgeInsets.all(16),
       child: Column(children: [
         if (vc != null && vc.value.isInitialized)
-          AspectRatio(
-            aspectRatio: vc.value.aspectRatio,
-            child: VideoPlayer(vc),
-          ),
+          AspectRatio(aspectRatio: vc.value.aspectRatio, child: VideoPlayer(vc)),
         const SizedBox(height: 8),
         if (_msg.isNotEmpty)
-          Text(_msg, style: const TextStyle(fontSize: 12, color: Color(0xFF9AA3AF))),
+          Text(_msg,
+              style: const TextStyle(fontSize: 12, color: Color(0xFF9AA3AF))),
         const SizedBox(height: 8),
         Row(children: [
           Expanded(
