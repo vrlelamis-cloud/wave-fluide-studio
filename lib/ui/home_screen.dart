@@ -665,7 +665,7 @@ class _ResultZoneState extends State<_ResultZone> {
   Future<void> _share() async {
     try {
       // API share_plus 10.x.
-      await Share.shareXFiles([XFile(widget.path)], mime: 'video/mp4');
+      await Share.shareXFiles([XFile(widget.path, mimeType: 'video/mp4')]);
     } catch (e) {
       setState(() => _msg = 'Partage impossible');
     }
